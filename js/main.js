@@ -3,7 +3,7 @@ let innovationChart;
 let barChart;
 let pieChart;
 
-d3.csv('data/leaderlist.csv')
+d3.csv('data/preprocessedMovies2.csv')
   .then(_data => {
     data = _data;
 
