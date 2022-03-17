@@ -3,8 +3,8 @@ class BarChart {
   constructor(_config, _data) {
      this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 800,
-      containerHeight: 500,
+      containerWidth: 500,
+      containerHeight: 300,
       margin: {top: 50, right: 10, bottom: 20, left: 60},
     }
     this.data = _data;

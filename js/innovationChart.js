@@ -3,7 +3,7 @@ class InnovationChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 700,
+      containerWidth: 500,
       containerHeight: 500,
       margin: {top: 15, right: 15, bottom: 20, left: 25}
     }
