@@ -3,8 +3,8 @@ class PieChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 500,
-      containerHeight: _config.containerHeight || 500,
+      containerWidth: _config.containerWidth || 400,
+      containerHeight: _config.containerHeight || 300,
       margin: _config.margin || {top: 20, right: 20, bottom: 20, left: 60}
     }
     this.data = _data;
@@ -24,12 +24,11 @@ class PieChart {
       "Prime Video",
       "Disney+",
     ] 
-
     vis.colors = [
-      '#1f77b4',
-      '#ff7f0e',
-      '#2ca02c',
       '#d62728',
+      '#2ca02c',
+      '#ff7f0e',
+      '#1f77b4',
       ]
 
     vis.colorScale = d3.scaleOrdinal()
@@ -40,20 +39,14 @@ class PieChart {
     .attr('width', vis.config.containerWidth)
     .attr('height', vis.config.containerHeight)
         
-    vis.svg
+    vis.title = vis.svg
       .append('g')
         .append('text')
-        .attr("x",  vis.config.margin.left)   
-        .attr("y", vis.config.margin.top)
         .style('font-family', 'arial')
         .style("font-size", "15px")
         .style("font-weight", "bold")
-        .text('Number of Movies by Platform');
-
-    vis.chart = vis.svg
-    .append('g')
-    .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-
+        .text('Number of Movies by Platform')
+        .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top })`)
   }
 
 
@@ -76,18 +69,16 @@ class PieChart {
                   vis.platformMovieCount[3][1],
                 ];
   
-    var svg = d3.select("svg");
-
-    let g = svg.append("g")
-               .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 200})`);
+    let chart = vis.svg.append("g")
+               .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
       
     var pie = d3.pie();
 
     var arc = d3.arc()
                 .innerRadius(0)
-                .outerRadius(150);
+                .outerRadius(100);
 
-    var arcs = g.selectAll("arc")
+    var arcs = chart.selectAll("arc")
                 .data(pie(data))
                 .enter()
                 .append("g");
@@ -110,12 +101,47 @@ class PieChart {
     
 
     arcs.append('text')
-    .text(d => {
-      return d.data})
-    .attr("transform", d => {
-      return "translate(" + arc.centroid(d) + ")";  
-    })
-    .style('text-anchor', 'middle')
-    .style('font-size', 14)
+        .text(d => {
+          return d.data})
+        .attr("transform", d => {
+          return "translate(" + arc.centroid(d) + ")";  
+        })
+        .style('text-anchor', 'middle')
+        .style('font-size', 14)
+        .style('fill', 'white')
+
+    let size = 18
+    vis.legend = vis.svg.append('g')
+
+    vis.legend.attr('transform', `translate(${190},0)`);
+    
+    vis.legend.selectAll('squares')
+           .data(vis.colors)
+           .enter()
+           .append('rect')
+           .attr('x', 100)
+           .attr('y', function(d, i) {
+             return 100 + i * (size + 5)
+           })
+           .attr('width', size)
+           .attr('height', size)
+           .style("fill", d => d)
+    
+    vis.legend.selectAll('labels')
+           .data(vis.platforms)
+           .enter()
+           .append("text")
+           .attr("x", 100 + size * 1.2)
+           .attr("y", function(d, i) {
+             return 100 + i * (size + 5) + (size / 2)
+           })
+           .attr('text-anchor', 'left')
+           .style("fill", function(d, i) {
+             return vis.colors[i]
+           })
+           .style('alignment-baseline', 'middle')
+           .text(d => d)
+  
+
   }
 }

@@ -22,3 +22,6 @@ Adapted pie chart
 https://www.d3-graph-gallery.com/graph/pie_annotation.html
 <br>
 https://www.geeksforgeeks.org/d3-js-pie-function/
+<br>
+Adapted legend
+https://www.d3-graph-gallery.com/graph/custom_legend.html
