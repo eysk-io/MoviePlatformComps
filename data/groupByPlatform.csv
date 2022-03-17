@@ -1,4 +1,4 @@
-Platform,UID,Title,Year,Age,Netflix,Hulu,Prime Video,Disney+,Rotten Tomato Score,rating,genre,released,score,votes,director,writer,star,country,budget,gross,company,runtime,released_date
+platform,UID,Title,Year,Age,Netflix,Hulu,Prime Video,Disney+,Rotten Tomato Score,rating,genre,released,score,votes,director,writer,star,country,budget,gross,company,runtime,released_date
 Netflix,1,The Irishman,2019,18+,1,0,0,0,98,R,Biography,"November 27, 2019 (United States)",7.8,344000,Martin Scorsese,Steven Zaillian,Robert De Niro,United States,159000000,968853,Tribeca Productions,209,2019-11-27
 Netflix,2,Dangal,2016,7+,1,0,0,0,97,Not Rated,Action,"December 21, 2016 (United States)",8.4,167000,Nitesh Tiwari,Piyush Gupta,Aamir Khan,India,0,303723636,Aamir Khan Productions,161,2016-12-21
 Netflix,4,Lagaan: Once Upon a Time in India,2001,7+,1,0,0,0,94,PG,Drama,"June 15, 2001 (United States)",8.1,108000,Ashutosh Gowariker,Ashutosh Gowariker,Aamir Khan,India,0,1724806,Aamir Khan Productions,224,2001-06-15

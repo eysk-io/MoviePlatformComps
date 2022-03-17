@@ -114,30 +114,11 @@ vis.genres = [
 
   updateVis() {
     let vis = this;
-
-    vis.groupByPlatform = d3.groups(vis.data, d => d.platform);
-    console.log(this.groupByPlatform)
     vis.renderVis();
   }
 
   renderVis() {
     let vis = this;
-
-    let bars = vis.chart.append("g")
-            .selectAll("g")
-            // Enter in data = loop group per group
-            .data(vis.groupByPlatform)
-            .enter()
-            .append("g")
-              .attr("transform", function(d) { return "translate(" + vis.xScale(vis.platforms) + ",0)"; })
-            .selectAll("rect")
-            .data(function(d) { return genres.map(function(key) { return {key: key, value: 5}; }); })
-            .enter().append("rect")
-              .attr("x", function(d) { return xSubgroup(d.key); })
-              .attr("y", function(d) { return vis.yScale(5); })
-              .attr("width", xSubgroup.bandwidth())
-              .attr("height", function(d) { return height - vis.yScale(5); })
-              .attr("fill", function(d) { return color(d.key); });
 
     vis.xAxisG
     .call(vis.xAxis)
