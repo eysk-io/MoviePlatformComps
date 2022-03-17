@@ -13,3 +13,12 @@ References
 <br>
 Adapted starter code from Johnny Li's Programming 2
 <br>
+Adapted grouped bar chart
+<br>
+https://www.d3-graph-gallery.com/graph/barplot_grouped_basicWide.html
+<br>
+Adapted pie chart
+<br>
+https://www.d3-graph-gallery.com/graph/pie_annotation.html
+<br>
+https://www.geeksforgeeks.org/d3-js-pie-function/
