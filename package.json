@@ -1,0 +1,20 @@
+{
+  "name": "project_g04",
+  "version": "1.0.0",
+  "description": "<br>\r Team Members:\r <br>\r Eric Kim, c7v2b\r <br>\r Joyce Leung, m3r1b\r <br>\r Johnny Li, t3e2b\r <br>\r <br>\r References\r <br>\r Adapted starter code from Johnny Li's Programming 2\r <br>\r Adapted grouped bar chart\r <br>\r https://www.d3-graph-gallery.com/graph/barplot_grouped_basicWide.html\r <br>\r Adapted pie chart\r <br>\r https://www.d3-graph-gallery.com/graph/pie_annotation.html\r <br>\r https://www.geeksforgeeks.org/d3-js-pie-function/\r <br>\r Adapted legend\r https://www.d3-graph-gallery.com/graph/custom_legend.html",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.students.cs.ubc.ca/CPSC436V-2021W-T2/project_g04.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb": "^19.0.4"
+  }
+}
