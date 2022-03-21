@@ -30,8 +30,6 @@ d3.csv('data/groupByPlatform.csv')
       });
     });
 
-    console.log(data);
-
     data.sort((a, b) => a.label - b.label);
 
     innovationChart = new InnovationChart({
