@@ -35,10 +35,7 @@ class BarChart {
       '#fdb462',
       '#b3de69',
       '#fccde5',
-      '#d9d9d9',
-      '#bc80bd',
-      '#ccebc5',
-      '#ffed6f',
+      '#d9d9d9'
     ];
 
     vis.genres = [
@@ -46,14 +43,11 @@ class BarChart {
       'Action',
       'Drama',
       'Crime',
-      'Mystery',
       'Comedy',
       'Adventure',
       'Horror',
       'Animation',
-      'Thriller',
-      'Sport',
-      'Fantasy',
+      'Other'
     ];
 
     vis.xScale = d3.scaleBand()
