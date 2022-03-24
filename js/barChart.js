@@ -10,7 +10,7 @@ class BarChart {
     };
     this.data = _data;
     this.barCounts = _barCounts;
-    // console.log('max bar height:',  _barCounts[0].count);
+    console.log('max bar height:',  _barCounts[0].count);
     this.initVis();
   }
 
