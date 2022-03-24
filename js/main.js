@@ -1,7 +1,16 @@
 let data;
+let barData;
 let innovationChart;
 let barChart;
 let pieChart;
+
+d3.csv('data/groupedPlatformGenre.csv')
+      .then((_barData) => {
+      barData = _barData;
+
+      // console.log(barData);
+});
+
 
 d3.csv('data/groupByPlatform.csv')
   .then((_data) => {
@@ -30,7 +39,11 @@ d3.csv('data/groupByPlatform.csv')
       });
     });
 
-    data.sort((a, b) => a.label - b.label);
+    let groupedPlatformGenre = d3.rollups(data, v => v.length, d => d.platform + '-' + d.genre);
+    let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));
+  
+    dataPlatformGenre.sort((a, b) => b.count - a.count);
+    // console.log(dataPlatformGenre);
 
     innovationChart = new InnovationChart({
       parentElement: '#innovation-chart',
@@ -44,6 +57,7 @@ d3.csv('data/groupByPlatform.csv')
 
     barChart = new BarChart({
       parentElement: '#bar-chart',
-    }, data);
+    }, barData, dataPlatformGenre);
     barChart.updateVis();
+
   });
