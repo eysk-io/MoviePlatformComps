@@ -1,7 +1,15 @@
+let barData;
+
+d3.csv('data/groupedPlatformGenre.csv')
+  .then((_barData) => {
+    barData = _barData;
+  });
+
 d3.csv('data/groupByPlatform.csv')
   .then((_data) => {
     const data = collapseCategories(_data);
-    data.sort((a, b) => a.label - b.label);
+    let groupedPlatformGenre = d3.rollups(data, v => v.length, d => d.platform + '-' + d.genre);
+    let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));
 
     const innovationChart = new InnovationChart({
       parentElement: '#innovation-chart',
