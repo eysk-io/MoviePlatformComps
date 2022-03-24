@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let data;
 let barData;
 let innovationChart;
@@ -44,20 +45,49 @@ d3.csv('data/groupByPlatform.csv')
   
     dataPlatformGenre.sort((a, b) => b.count - a.count);
     // console.log(dataPlatformGenre);
+=======
+d3.csv('data/groupByPlatform.csv')
+  .then((_data) => {
+    const data = collapseCategories(_data);
+    data.sort((a, b) => a.label - b.label);
+>>>>>>> 67fad68a8de5f70ce22307b2d1318f2cd0ff29ec
 
-    innovationChart = new InnovationChart({
+    const innovationChart = new InnovationChart({
       parentElement: '#innovation-chart',
     }, data);
     innovationChart.updateVis();
 
-    pieChart = new PieChart({
+    const pieChart = new PieChart({
       parentElement: '#pie-chart',
     }, data);
     pieChart.updateVis();
 
-    barChart = new BarChart({
+    const barChart = new BarChart({
       parentElement: '#bar-chart',
     }, barData, dataPlatformGenre);
     barChart.updateVis();
 
   });
+
+function collapseCategories(_data) {
+  const data = _data;
+
+  data.forEach((d) => {
+    Object.keys(d).forEach((attr) => {
+      if (attr === 'genre') {
+        switch (d[attr]) {
+          case 'Fantasy':
+          case 'Mystery':
+          case 'Family':
+          case 'Thriller':
+          case 'Sport':
+          case 'Sci-Fi':
+          default:
+            d[attr] = 'Other';
+        }
+      }
+    });
+  });
+
+  return data;
+}

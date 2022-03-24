@@ -1,3 +1,27 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+svg {
+  margin: 10px
+}
+
+.header {
+  font-size: 20px;
+  margin: auto;
+  text-align: center;
+  font-weight: bold;
+}
+
+.chart-header {
+  font-size: 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
 #tooltip {
   position: absolute;
   opacity: 1;
