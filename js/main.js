@@ -32,8 +32,9 @@ function collapseCategories(_data) {
           case 'Thriller':
           case 'Sport':
           case 'Sci-Fi':
-          default:
             d[attr] = 'Other';
+            break;
+          default:
         }
       }
     });
