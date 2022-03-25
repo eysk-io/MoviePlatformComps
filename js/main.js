@@ -2,7 +2,7 @@ let barData;
 
 d3.csv('data/groupedPlatformGenre.csv')
   .then((_barData) => {
-    barData = _barData;
+    barData = _barData
   });
 
 d3.csv('data/groupByPlatform.csv')
