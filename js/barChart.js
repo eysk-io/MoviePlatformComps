@@ -1,5 +1,5 @@
 class BarChart {
-  constructor(_config, _data, _barCounts, _rawData) {
+  constructor(_config, _rawData, _barCounts) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 500,
@@ -8,15 +8,18 @@ class BarChart {
         top: 50, right: 10, bottom: 20, left: 60,
       },
     };
-    this.data = _data;
-    console.log('this.data:', this.data);
-    
+    this.rawData = _rawData;
+
     this.barCounts = _barCounts;
     console.log('max bar height:',  _barCounts[0].count);
 
-    this.rawData = _rawData;
-    
-    // this.setGenreCounts = setGenreCounts;
+    const platformToGenres = new Map();
+    this.setGenreCounts(platformToGenres, this.rawData);
+
+    this.barData = [];
+    this.barData = this.crosstabFormat(platformToGenres);    
+
+    console.log('barData:', barData);
 
     this.initVis();
   }
@@ -29,7 +32,7 @@ class BarChart {
     
     vis.maxBarCount = vis.barCounts[0].count + 30;
 
-    vis.platforms = d3.map(vis.data, (d) => d.group);
+    vis.platforms = d3.map(vis.barData, (d) => d.group);
     // console.log('platforms',vis.platforms);
 
     // the top set of colours have been improved for colour deficient
@@ -55,7 +58,7 @@ class BarChart {
       // '#d9d9d9'
     ];
 
-    vis.genres = vis.data.columns.slice(1);
+    vis.genres = vis.barData.columns.slice(1);
     // console.log('genre',vis.genres);
 
     vis.yScale = d3.scaleLinear()
@@ -114,25 +117,15 @@ class BarChart {
 
   updateVis() {
     const vis = this;
-    const platformToGenres = new Map();
-    vis.setGenreCounts(platformToGenres, vis.rawData);
-    console.log('platformToGenres:',  platformToGenres);
-    let barGroups = [], temp = [];
-   
-    // let map = new Map().set('a', 1).set('b', 2),
-    barGroups = Array.from(platformToGenres, ([group, genre]) => ({ group, genre }));
-    console.log('barGroups:',  barGroups);
-    temp = Array.from(barGroups[0].genre, ([name, value]) => ({ name, value }));
-    console.log('barGroups[0].genre:',  barGroups[0].genre);
-    console.log('temp:',  temp);
-    let tempObj = temp.reduce(function ( total, current ) {
-      total[ current.name ] = current.value;
-      return total;
-      }, {});
-    console.log('tempObj:',  tempObj);  
+    // const platformToGenres = new Map();
+    // vis.setGenreCounts(platformToGenres, vis.rawData);
+    // // console.log('platformToGenres:',  platformToGenres);
+    // let barData = [];
+    // barData = vis.crosstabFormat(platformToGenres);    
 
     vis.renderVis();
   }
+  
 
   renderVis() {
     const vis = this;
@@ -151,7 +144,7 @@ class BarChart {
 
   /*************HELPERs*******************/
 
-  /* Purpose: Create and render bars */
+  /* Purpose: Create and render a grouped bar chart */
   renderBars() {
     let vis = this;
 
@@ -159,7 +152,7 @@ class BarChart {
     const bars = vis.svg.append("g")
     .selectAll("g")
     // Enter in data = loop group per group
-    .data(vis.data)
+    .data(vis.barData)    
     .enter()
     .append("g")
       .attr("transform", d => {return "translate(" + vis.xScale(d.group) + ",0)" })
@@ -171,9 +164,13 @@ class BarChart {
       .attr("width", vis.xSubGroupScale.bandwidth())
       .attr("height", d => { return vis.height - vis.yScale(d.value); })
       .attr("fill", d => { return vis.colour(d.key); });
-
   }
 
+  /* aggregates genre count based on platform, result is updated to parameter map object
+   * @param: platformToGenres: an empty map 
+   *         expanded movies data
+   * returns: nothing
+   * */
   setGenreCounts(platformToGenres, rawData) {
     const allGenres = new Set();
     rawData.forEach((d) => allGenres.add(d.genre));
@@ -192,13 +189,33 @@ class BarChart {
     });
   }  
 
-  setToArray(platformToGenres, barGroups) {
-    
-    platformToGenres.forEach((d) => allGenres.add(d.genre));
-    barGroups = Array.from(platformToGenres, ([name, value]) => ({ name, value }));
-    
-  
-    
+  /* converts aggregated genre count map into a flat crosstab object array for grouped bar chart 
+   * @param: map data from vis.setGenreCounts() 
+   * returns: a flat crosstab object array
+   * */
+  crosstabFormat(genreCounts){
+    let barGroups = [], keys = [];
+    barGroups = Array.from(genreCounts, ([group, genre]) => ({ group, genre }));
+
+    let i = 0, barData = [];
+    barGroups.forEach((d) => {
+      let temp = [];
+      temp = Array.from(barGroups[i].genre, ([name, value]) => ({ name, value }));
+      let tempObj = temp.reduce(function ( total, current ) {
+        total[ current.name ] = current.value.toString();
+        return total;
+        }, {group: barGroups[i].group});
+      barData.push(tempObj);
+      i++;
+    });
+    keys = Object.keys(barData[0]);
+    let pair = {columns: keys};
+    // barData = [{...barData, ...pair}];
+    barData['columns'] = keys;
+
+    console.log('barData, keys', barData);
+
+    return barData;
   }
 
 }

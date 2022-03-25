@@ -32,9 +32,14 @@ d3.csv('data/groupByPlatform.csv')
     }, data);
     pieChart.updateVis();
 
+    // const barChart = new BarChart({
+    //   parentElement: '#bar-chart',
+    // }, data, dataPlatformGenre, barData);
+    // barChart.updateVis();
+
     const barChart = new BarChart({
       parentElement: '#bar-chart',
-    }, barData, dataPlatformGenre, data);
+    }, data, dataPlatformGenre);
     barChart.updateVis();
 
   });
