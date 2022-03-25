@@ -8,19 +8,19 @@ d3.csv('data/groupedPlatformGenre.csv')
       .then((_barData) => {
       barData = _barData;
 
-      console.log(barData);
+      console.log('barData', barData);
 });
 
 d3.csv('data/groupByPlatform.csv')
   .then((_data) => {
     const data = collapseCategories(_data);
-    console.log(_data);
+    // console.log(_data);
 
     let groupedPlatformGenre = d3.rollups(data, v => v.length, d => d.platform + '-' + d.genre);
     let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));
   
     dataPlatformGenre.sort((a, b) => b.count - a.count);
-    console.log(dataPlatformGenre);
+    console.log('dataPlatformGenre', dataPlatformGenre);
 
     const innovationChart = new InnovationChart({
       parentElement: '#innovation-chart',
@@ -34,7 +34,7 @@ d3.csv('data/groupByPlatform.csv')
 
     const barChart = new BarChart({
       parentElement: '#bar-chart',
-    }, barData, dataPlatformGenre);
+    }, barData, dataPlatformGenre, data);
     barChart.updateVis();
 
   });
@@ -52,7 +52,7 @@ function collapseCategories(_data) {
           case 'Thriller':
           case 'Sport':
           case 'Sci-Fi':
-          default:
+          // default:
             d[attr] = 'Other';
         }
       }
@@ -61,3 +61,6 @@ function collapseCategories(_data) {
 
   return data;
 }
+
+
+

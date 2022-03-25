@@ -1,5 +1,5 @@
 class BarChart {
-  constructor(_config, _data, _barCounts) {
+  constructor(_config, _data, _barCounts, _rawData) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 500,
@@ -9,8 +9,15 @@ class BarChart {
       },
     };
     this.data = _data;
+    console.log('this.data:', this.data);
+    
     this.barCounts = _barCounts;
     console.log('max bar height:',  _barCounts[0].count);
+
+    this.rawData = _rawData;
+    
+    this.setGenreCounts = setGenreCounts;
+
     this.initVis();
   }
 
@@ -107,6 +114,10 @@ class BarChart {
 
   updateVis() {
     const vis = this;
+    const platformToGenres = new Map();
+    let groupedBarData = vis.setGenreCounts(platformToGenres, vis.rawData);
+    console.log('groupedBarData:',  groupedBarData);
+
     vis.renderVis();
   }
 
@@ -125,7 +136,9 @@ class BarChart {
       .selectAll('.tick line').attr('opacity', 0.25);    
   }
 
-  /* Purpose: Create and render bars using .join() */
+  /*************HELPERs*******************/
+
+  /* Purpose: Create and render bars */
   renderBars() {
     let vis = this;
 
@@ -145,6 +158,27 @@ class BarChart {
       .attr("width", vis.xSubGroupScale.bandwidth())
       .attr("height", d => { return vis.height - vis.yScale(d.value); })
       .attr("fill", d => { return vis.colour(d.key); });
+
+  }
+
+  setGenreCounts(platformToGenres, rawData) {
+    const allGenres = new Set();
+    rawData.forEach((d) => allGenres.add(d.genre));
+  
+    let allCounts;
+    rawData.forEach((d) => {
+      if (platformToGenres.has(d.platform)) {
+        allCounts = platformToGenres.get(d.platform);
+      } else {
+        allCounts = new Map();
+        allGenres.forEach((g) => allCounts.set(g, 0));
+      }
+      const currCount = allCounts.get(d.genre);
+      allCounts.set(d.genre, currCount + 1);
+      platformToGenres.set(d.platform, allCounts);
+    });
   }
 
 }
+
+
