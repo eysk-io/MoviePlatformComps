@@ -16,7 +16,7 @@ class BarChart {
 
     this.rawData = _rawData;
     
-    this.setGenreCounts = setGenreCounts;
+    // this.setGenreCounts = setGenreCounts;
 
     this.initVis();
   }
@@ -115,8 +115,21 @@ class BarChart {
   updateVis() {
     const vis = this;
     const platformToGenres = new Map();
-    let groupedBarData = vis.setGenreCounts(platformToGenres, vis.rawData);
-    console.log('groupedBarData:',  groupedBarData);
+    vis.setGenreCounts(platformToGenres, vis.rawData);
+    console.log('platformToGenres:',  platformToGenres);
+    let barGroups = [], temp = [];
+   
+    // let map = new Map().set('a', 1).set('b', 2),
+    barGroups = Array.from(platformToGenres, ([group, genre]) => ({ group, genre }));
+    console.log('barGroups:',  barGroups);
+    temp = Array.from(barGroups[0].genre, ([name, value]) => ({ name, value }));
+    console.log('barGroups[0].genre:',  barGroups[0].genre);
+    console.log('temp:',  temp);
+    let tempObj = temp.reduce(function ( total, current ) {
+      total[ current.name ] = current.value;
+      return total;
+      }, {});
+    console.log('tempObj:',  tempObj);  
 
     vis.renderVis();
   }
@@ -177,6 +190,15 @@ class BarChart {
       allCounts.set(d.genre, currCount + 1);
       platformToGenres.set(d.platform, allCounts);
     });
+  }  
+
+  setToArray(platformToGenres, barGroups) {
+    
+    platformToGenres.forEach((d) => allGenres.add(d.genre));
+    barGroups = Array.from(platformToGenres, ([name, value]) => ({ name, value }));
+    
+  
+    
   }
 
 }
