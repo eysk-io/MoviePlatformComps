@@ -1,14 +1,13 @@
 let barData;
 
-d3.csv('data/preprocessedMovies2.csv')
+d3.csv('data/groupedPlatformGenre.csv')
   .then((_barData) => {
     barData = _barData;
   });
 
-d3.csv('data/preprocessedMovies2.csv')
+d3.csv('data/groupByPlatform.csv')
   .then((_data) => {
-    let data = collapseCategories(_data);
-    data = groupByPlatform(data);
+    const data = collapseCategories(_data);
     let groupedPlatformGenre = d3.rollups(data, v => v.length, d => d.platform + '-' + d.genre);
     let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));
 
@@ -50,31 +49,4 @@ function collapseCategories(_data) {
   });
 
   return data;
-}
-
-function groupByPlatform(_data) {
-  const data = _data;
-  let groupByPlatformData = []
-
-  data.forEach((d) => {
-    Object.keys(d).forEach((attr) => {
-      if (attr === 'Netflix' && d[attr] == '1') {
-        d['platform'] = 'Netflix'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Hulu' && d[attr] == '1') {
-        d['platform'] = 'Hulu'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Prime Video' && d[attr] == '1') {
-        d['platform'] = 'Prime Video'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Disney+' && d[attr] == '1') {
-        d['platform'] = 'Disney+'
-        groupByPlatformData.push(d)
-      }
-    });
-  });
-  return groupByPlatformData;
 }
