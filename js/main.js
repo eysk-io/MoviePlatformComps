@@ -1,10 +1,8 @@
 let barData;
 
-d3.csv('data/preprocessedMovies2.csv')
+d3.csv('data/groupedPlatformGenre.csv')
   .then((_barData) => {
-    console.log(_barData);
-    xData = groupByPlatform(_barData);
-    console.log(xData);
+    barData = _barData
   });
 
 d3.csv('data/preprocessedMovies2.csv')
