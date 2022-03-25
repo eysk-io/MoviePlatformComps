@@ -33,7 +33,6 @@ class BarChart {
     vis.maxBarCount = vis.barCounts[0].count + 30;
 
     vis.platforms = d3.map(vis.barData, (d) => d.group);
-    // console.log('platforms',vis.platforms);
 
     // the top set of colours have been improved for colour deficient
     // from https://medialab.github.io/iwanthue/
@@ -59,7 +58,6 @@ class BarChart {
     ];
 
     vis.genres = vis.barData.columns.slice(1);
-    // console.log('genre',vis.genres);
 
     vis.yScale = d3.scaleLinear()
       .domain([0, vis.maxBarCount])
@@ -117,15 +115,9 @@ class BarChart {
 
   updateVis() {
     const vis = this;
-    // const platformToGenres = new Map();
-    // vis.setGenreCounts(platformToGenres, vis.rawData);
-    // // console.log('platformToGenres:',  platformToGenres);
-    // let barData = [];
-    // barData = vis.crosstabFormat(platformToGenres);    
 
     vis.renderVis();
-  }
-  
+  }  
 
   renderVis() {
     const vis = this;
@@ -166,9 +158,9 @@ class BarChart {
       .attr("fill", d => { return vis.colour(d.key); });
   }
 
-  /* aggregates genre count based on platform, result is updated to parameter map object
+  /* aggregates genre count based on platform, result is updated to map object passed in as parameter
    * @param: platformToGenres: an empty map 
-   *         expanded movies data
+   *         rawData: expanded movies dataset
    * returns: nothing
    * */
   setGenreCounts(platformToGenres, rawData) {
@@ -190,7 +182,7 @@ class BarChart {
   }  
 
   /* converts aggregated genre count map into a flat crosstab object array for grouped bar chart 
-   * @param: map data from vis.setGenreCounts() 
+   * @param: genreCounts: map object updated in vis.setGenreCounts() 
    * returns: a flat crosstab object array
    * */
   crosstabFormat(genreCounts){
@@ -210,10 +202,8 @@ class BarChart {
     });
     keys = Object.keys(barData[0]);
     let pair = {columns: keys};
-    // barData = [{...barData, ...pair}];
-    barData['columns'] = keys;
 
-    console.log('barData, keys', barData);
+    barData['columns'] = keys;
 
     return barData;
   }
