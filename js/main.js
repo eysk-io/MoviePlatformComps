@@ -93,26 +93,27 @@ function createFrag(htmlStr) {
 function groupByPlatform(_data) {
   const data = _data;
   let groupByPlatformData = []
-
-  data.forEach((d) => {
-    Object.keys(d).forEach((attr) => {
-      if (attr === 'Netflix' && d[attr] == '1') {
-        d['platform'] = 'Netflix'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Hulu' && d[attr] == '1') {
-        d['platform'] = 'Hulu'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Prime Video' && d[attr] == '1') {
-        d['platform'] = 'Prime Video'
-        groupByPlatformData.push(d)
-      }
-      if (attr === 'Disney+' && d[attr] == '1') {
-        d['platform'] = 'Disney+'
-        groupByPlatformData.push(d)
-      }
-    });
-  });
+  data.forEach(d => {
+    if (d['Netflix'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Netflix';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Hulu'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Hulu';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Prime Video'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Prime Video';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Disney+'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Disney+';
+      groupByPlatformData.push(dClone)
+    }
+  })
   return groupByPlatformData;
 }
