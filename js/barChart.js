@@ -1,5 +1,5 @@
 class BarChart {
-  constructor(_config, _rawData, _barCounts) {
+  constructor(_config, _rawData) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 500,
@@ -10,8 +10,8 @@ class BarChart {
     };
     this.rawData = _rawData;
 
-    this.barCounts = _barCounts;
-    console.log('max bar height:',  _barCounts[0].count);
+    // this.barCounts = _barCounts;
+    // console.log('max bar height:',  _barCounts[0].count);
 
     const platformToGenres = new Map();
     this.setGenreCounts(platformToGenres, this.rawData);
@@ -19,7 +19,7 @@ class BarChart {
     this.barData = [];
     this.barData = this.crosstabFormat(platformToGenres);    
 
-    console.log('barData:', barData);
+    // console.log('barData:', barData);
 
     this.initVis();
   }
@@ -30,12 +30,12 @@ class BarChart {
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
     
-    vis.maxBarCount = vis.barCounts[0].count + 30;
+    vis.maxBarCount = vis.getMaxGenreCount(vis.rawData) + 20;
+    //  console.log('vis.maxBarCount:', vis.maxBarCount);
 
     vis.platforms = d3.map(vis.barData, (d) => d.group);
 
-    // the top set of colours have been improved for colour deficient
-    // from https://medialab.github.io/iwanthue/
+    /* chosen colours: selected for colour deficient */
     vis.barColours = [ 
       '#5c252b',
       '#aacf22',
@@ -46,15 +46,6 @@ class BarChart {
       '#93cdf7',
       '#fab888',
       '#ff92dd' 
-      // '#8dd3c7',
-      // '#ffffb3',
-      // '#bebada',
-      // '#fb8072',
-      // '#80b1d3',
-      // '#fdb462',
-      // '#b3de69',
-      // '#fccde5',
-      // '#d9d9d9'
     ];
 
     vis.genres = vis.barData.columns.slice(1);
@@ -207,6 +198,19 @@ class BarChart {
 
     return barData;
   }
+
+  /* returns the max genre x platform count for grouped bar chart: used to set bar chart height
+   * @param: rawData: raw data object from main.js
+   * returns: a number: the max genre x platform count
+   * */
+  getMaxGenreCount(rawData) {
+    let groupedPlatformGenre = d3.rollups(rawData, v => v.length, d => d.platform + '-' + d.genre);
+    let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));  
+    dataPlatformGenre.sort((a, b) => b.count - a.count);
+
+    return dataPlatformGenre[0].count;
+  }
+  
 
 }
 
