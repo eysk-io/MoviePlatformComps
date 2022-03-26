@@ -22,6 +22,33 @@ svg {
   justify-content: center;
 }
 
+#mpa-rating-button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mpa-rating-button {
+  margin: 10px;
+}
+
+#innovation-chart {
+  background-color: #FFFAFA;
+}
+
+#innovHeader {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#innovXAxis, #innovYAxis {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.tick line {
+  visibility:hidden;
+}
+
 #tooltip {
   position: absolute;
   opacity: 1;
