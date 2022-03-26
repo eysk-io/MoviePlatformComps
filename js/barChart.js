@@ -10,16 +10,13 @@ class BarChart {
     };
     this.rawData = _rawData;
 
-    // this.barCounts = _barCounts;
-    // console.log('max bar height:',  _barCounts[0].count);
-
     const platformToGenres = new Map();
     this.setGenreCounts(platformToGenres, this.rawData);
 
     this.barData = [];
     this.barData = this.crosstabFormat(platformToGenres);    
 
-    // console.log('barData:', barData);
+    console.log('this.barData:', this.barData);
 
     this.initVis();
   }
@@ -132,7 +129,7 @@ class BarChart {
     let vis = this;
 
     // Bind data to visual elements
-    const bars = vis.svg.append("g")
+    const groupedBars = vis.svg.append("g")
     .selectAll("g")
     // Enter in data = loop group per group
     .data(vis.barData)    
@@ -201,7 +198,7 @@ class BarChart {
 
   /* returns the max genre x platform count for grouped bar chart: used to set bar chart height
    * @param: rawData: raw data object from main.js
-   * returns: a number: the max genre x platform count
+   * returns: int: the max genre x platform count
    * */
   getMaxGenreCount(rawData) {
     let groupedPlatformGenre = d3.rollups(rawData, v => v.length, d => d.platform + '-' + d.genre);
