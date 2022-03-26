@@ -10,9 +10,14 @@ svg {
   font-size: 12px;
 }
 
-.row {
+.column {
   display: flex;
   justify-content: center;
+}
+
+.second {
+  display: flex;
+  flex-direction: column;
 }
 
 #mpa-rating-button-container {
