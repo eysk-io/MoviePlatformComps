@@ -95,24 +95,22 @@ function groupByPlatform(_data) {
   let groupByPlatformData = []
 
   data.forEach((d) => {
-    Object.keys(d).forEach((attr) => {
-      if (attr === 'Netflix' && d[attr] == '1') {
-        d['platform'] = 'Netflix'
+      if (d['Netflix'] == '1') {
         groupByPlatformData.push(d)
-      }
-      if (attr === 'Hulu' && d[attr] == '1') {
-        d['platform'] = 'Hulu'
+        groupByPlatformData[groupByPlatformData.length - 1]['platform'] = 'Netflix'
+      } 
+      if (d['Hulu'] == '1') {
         groupByPlatformData.push(d)
-      }
-      if (attr === 'Prime Video' && d[attr] == '1') {
-        d['platform'] = 'Prime Video'
+        groupByPlatformData[groupByPlatformData.length - 1]['platform'] = 'Hulu'
+      } 
+      if (d['Prime Video'] == '1') {
         groupByPlatformData.push(d)
-      }
-      if (attr === 'Disney+' && d[attr] == '1') {
-        d['platform'] = 'Disney+'
+        groupByPlatformData[groupByPlatformData.length - 1]['platform'] = 'Prime Video'
+      } 
+      if (d['Disney+'] == '1') {
         groupByPlatformData.push(d)
+        groupByPlatformData[groupByPlatformData.length - 1]['platform'] = 'Disney+'
       }
     });
-  });
   return groupByPlatformData;
 }
