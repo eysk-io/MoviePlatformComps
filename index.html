@@ -4,19 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/style.css">
-    <title>Comparison of Movies on Streaming Platforms</title>
+    <link rel="icon" type="image/png" href="images/favicon.png" sizes="16x16">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <title>Comparison of Movies on Streaming Services</title>
 </head>
 <body>
-    <div class="header">
-        <h1>Comparison of Movies on Streaming Platforms</h1>
-    </div>
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="background.mp4" type="video/mp4">
+    </video>
+    <img id="banner" src="banner.png" alt="banner image"/>
+    <h1 id="title">Comparison of Movies on Streaming Services</h1>
     <div class="charts">
-        <div class="row first">
-            <svg id="innovation-chart"></svg>
-            <svg id="pie-chart"></svg> 
-        </div>
-        <div class="row second">
-            <svg id="bar-chart"></svg>   
+        <div class="row">
+            <div class="column first">
+                <svg id="innovation-chart"></svg>
+                <div id="mpa-rating-button-container">
+            </div>
+            <div class="column second">
+                <svg id="pie-chart"></svg>
+                <svg id="bar-chart"></svg>
+            </div>
         </div>
     </div>
     <script src="js/d3.v6.min.js"></script>

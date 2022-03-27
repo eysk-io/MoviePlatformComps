@@ -6,20 +6,45 @@ svg {
   margin: 10px
 }
 
-.header {
-  font-size: 20px;
-  margin: auto;
-  text-align: center;
-  font-weight: bold;
-}
-
 .chart-header {
   font-size: 12px;
 }
 
-.row {
+.column {
   display: flex;
   justify-content: center;
+}
+
+.second {
+  display: flex;
+  flex-direction: column;
+}
+
+#mpa-rating-button-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.mpa-rating-button {
+  margin: 10px;
+}
+
+#innovation-chart {
+  background-color: #FFFAFA;
+}
+
+#innovHeader {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#innovXAxis, #innovYAxis {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.tick line {
+  visibility:hidden;
 }
 
 #tooltip {
@@ -38,3 +63,27 @@ svg {
   font-size: 10px;
   color: black;
 }
+
+#backgroundVideo {
+    position: fixed;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -5;
+  }
+
+  #banner {
+    background-position: center;
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #title {
+    text-align: center;
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 50px;
+    color:  black;
+  }
