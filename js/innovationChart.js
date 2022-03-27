@@ -49,7 +49,8 @@ class InnovationChart {
 
     vis.chart.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(vis.xScale))
+      .call(d3.axisBottom(vis.xScale)
+        .tickSize(0))
       .selectAll('text')
       .attr('id', 'innovXAxis');
 
@@ -66,7 +67,8 @@ class InnovationChart {
       .padding(0.01);
 
     vis.chart.append('g')
-      .call(d3.axisLeft(vis.yScale))
+      .call(d3.axisLeft(vis.yScale)
+        .tickSize(0))
       .selectAll('text')
       .attr('id', 'innovYAxis')
       .style('text-anchor', 'end')

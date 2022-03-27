@@ -43,10 +43,6 @@ svg {
   font-weight: bold;
 }
 
-.tick line {
-  visibility:hidden;
-}
-
 #tooltip {
   position: absolute;
   opacity: 1;
