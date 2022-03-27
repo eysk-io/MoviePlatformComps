@@ -25,3 +25,6 @@ https://www.geeksforgeeks.org/d3-js-pie-function/
 <br>
 Adapted legend
 https://www.d3-graph-gallery.com/graph/custom_legend.html
+<br>
+Colour site to get a set of colours that have been improved for colour deficient
+https://medialab.github.io/iwanthue/
