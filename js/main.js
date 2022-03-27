@@ -52,5 +52,32 @@ function collapseCategories(_data) {
   return data;
 }
 
+function groupByPlatform(_data) {
+  const data = _data;
+  let groupByPlatformData = []
+  data.forEach(d => {
+    if (d['Netflix'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Netflix';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Hulu'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Hulu';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Prime Video'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Prime Video';
+      groupByPlatformData.push(dClone)
+    }
+    if (d['Disney+'] == '1') {
+      dClone = Object.assign({}, d);
+      dClone['platform'] = 'Disney+';
+      groupByPlatformData.push(dClone)
+    }
+  })
+  return groupByPlatformData;
+}
 
 

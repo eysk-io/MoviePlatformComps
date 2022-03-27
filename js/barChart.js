@@ -2,10 +2,10 @@ class BarChart {
   constructor(_config, _rawData) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 500,
+      containerWidth: 550,
       containerHeight: 300,
       margin: {
-        top: 50, right: 10, bottom: 20, left: 60,
+        top: 90, right: 10, bottom: 20, left: 60,
       },
     };
     this.rawData = _rawData;
@@ -61,7 +61,7 @@ class BarChart {
       .range([0, vis.xScale.bandwidth()])
       .padding([0.2]);
 
-    vis.colour = d3.scaleOrdinal()
+    vis.colourScale = d3.scaleOrdinal()
       .domain(vis.genres)
       .range(vis.barColours);
 
@@ -80,10 +80,10 @@ class BarChart {
 
     vis.svg
       .append('text')
-      .attr('x', 60)
-      .attr('y', 20)
+      .attr('x', vis.config.margin.left)
+      .attr('y', vis.config.margin.bottom)
       .style('font-family', 'arial')
-      .style('font-size', '15px')
+      .style('font-size', '18px')
       .style('font-weight', 'bold')
       .text('Number of Movies by Genre for Each Platform');
 
@@ -111,6 +111,7 @@ class BarChart {
     const vis = this;
 
     vis.renderBars();
+    vis.renderLegend();
 
     vis.xAxisG
       .call(vis.xAxis)
@@ -137,13 +138,42 @@ class BarChart {
     .append("g")
       .attr("transform", d => {return "translate(" + vis.xScale(d.group) + ",0)" })
     .selectAll("rect")
-    .data(d => { return vis.genres.map(function(key) { return {key: key, value: d[key]} }) })
+    .data(d => { return vis.genres.map(key => { return {key: key, value: d[key]} }) })
     .enter().append("rect")
       .attr("x", d => { return vis.xSubGroupScale(d.key) + vis.config.margin.left })
       .attr("y", d => { return vis.yScale(d.value) + vis.config.margin.top })
       .attr("width", vis.xSubGroupScale.bandwidth())
       .attr("height", d => { return vis.height - vis.yScale(d.value); })
-      .attr("fill", d => { return vis.colour(d.key); });
+      .attr("fill", d => { return vis.colourScale(d.key); });
+  }
+
+  /* Purpose: Create and render a legend (checkbox & label) */
+  renderLegend() {
+    let vis = this;
+    // Add one checkbox in the legend for each label
+    let size = 15
+    vis.svg.selectAll("boxes")
+      .data(vis.genres)
+      .enter()
+      .append("rect")
+        .attr("x", (d, i) => vis.config.margin.left + i * (size + 40))
+        .attr("y", vis.config.margin.bottom + 20 ) 
+        .attr("width", size)
+        .attr("height", size)
+        .style("fill", d => { return vis.colourScale(d)});
+
+    // Add legend label
+    vis.svg.selectAll("labels")
+      .data(vis.genres)
+      .enter()
+      .append("text")
+        .attr("x", (d, i) => vis.config.margin.left + i * (size + 40) )
+        .attr("y", vis.config.margin.bottom + 20  + size*1.8) 
+        // .style("fill", function(d){ return vis.colourScale(d)})
+        .text(d => { return d})
+        .attr("text-anchor", "middle")
+        .style("alignment-baseline", "middle")
+        .style('font-size', '12px');
   }
 
   /* aggregates genre count based on platform, result is updated to map object passed in as parameter
@@ -206,8 +236,7 @@ class BarChart {
     dataPlatformGenre.sort((a, b) => b.count - a.count);
 
     return dataPlatformGenre[0].count;
-  }
-  
+  }  
 
 }
 
