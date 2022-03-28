@@ -1,24 +1,12 @@
-let barData;
-
-// crosstab csv for grouped bar chart data - use this to check that the new
-//  groupByPlatform produced by JS from preprocessedMovies.csv has the same genre counts
-d3.csv('data/groupedPlatformGenre.csv')
-  .then((_barData) => {
-    barData = _barData
-    console.log('barData:', barData);
-  });
-
 d3.csv('data/preprocessedMovies2.csv')
   .then((_data) => {
 
     let data = collapseCategories(_data);
     data = groupByPlatform(data);
-    let groupedPlatformGenre = d3.rollups(data, v => v.length, d => d.platform + '-' + d.genre);
-    let dataPlatformGenre = Array.from(groupedPlatformGenre, ([key, count]) => ({ key, count }));
 
-    return { data, dataPlatformGenre };
+    return { data };
   })
-  .then(({ data, dataPlatformGenre }) => {
+  .then(({ data }) => {
     generateMpaRatingWidgets(data);
 
     const innovationChart = new InnovationChart({
@@ -42,8 +30,10 @@ d3.csv('data/preprocessedMovies2.csv')
     const barChart = new BarChart({
       parentElement: '#bar-chart',
     }, data);
-    barChart.updateVis();
+    // barChart.updateVis();
+    
   });
+  
 
 function collapseCategories(_data) {
   const data = _data;
