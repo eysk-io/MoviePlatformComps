@@ -26,10 +26,10 @@ class PieChart {
       'Disney+',
     ];
     vis.colors = [
-      '#d62728',
-      '#2ca02c',
-      '#ff7f0e',
-      '#1f77b4',
+      '#485908',
+      '#ae35bb',
+      '#e4c44c',
+      '#007ae6',
     ];
 
     vis.colorScale = d3.scaleOrdinal()
