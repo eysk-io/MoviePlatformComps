@@ -35,7 +35,7 @@ class MultiViewPieChart {
 
     vis.radius = Math.max(
       Math.min(width, height) / 2,
-      65,
+      50,
     );
 
     vis.platforms = Object.getOwnPropertyNames(data.value);

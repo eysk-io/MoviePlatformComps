@@ -70,33 +70,37 @@ function aggregateData(data, bands, platforms) {
   });
 
   data.forEach((d) => {
-    let row;
-    if (d.gross <= bands[0].maxPerf) {
-      row = 0;
-    } else if (d.gross <= bands[1].maxPerf) {
-      row = 1;
-    } else {
-      row = 2;
-    }
+    if (+d.budget !== 0 && +d.gross !== 0) {
+      const currPerf = getPerfScore(d);
 
-    let col;
-    if (d['Rotten Tomato Score'] <= bands[0].maxScore) {
-      col = 0;
-    } else if (d['Rotten Tomato Score'] <= bands[1].maxScore) {
-      col = 1;
-    } else {
-      col = 2;
-    }
+      let row;
+      if (currPerf < bands[0].maxPerf) {
+        row = 0;
+      } else if (currPerf < bands[1].maxPerf) {
+        row = 1;
+      } else {
+        row = 2;
+      }
 
-    varsByGroup[row][col].total += 1;
-    varsByGroup[row][col][d.platform] += 1;
+      let col;
+      if (d['Rotten Tomato Score'] <= bands[0].maxScore) {
+        col = 0;
+      } else if (d['Rotten Tomato Score'] <= bands[1].maxScore) {
+        col = 1;
+      } else {
+        col = 2;
+      }
+
+      varsByGroup[row][col].total += 1;
+      varsByGroup[row][col][d.platform] += 1;
+    }
   });
 
   let aggregatedDataIdx = 0;
   for (let varIdx = 0; varIdx < varsByGroup.length; varIdx += 1) {
     for (let groupIdx = 0; groupIdx < varsByGroup[0].length; groupIdx += 1) {
       aggregatedData[aggregatedDataIdx] = {
-        variable: bands[varIdx].revenueBand.toUpperCase(),
+        variable: bands[varIdx].perfBand.toUpperCase(),
         group: bands[groupIdx].scoreBand.toUpperCase(),
         value: varsByGroup[varIdx][groupIdx],
       };
@@ -185,11 +189,11 @@ function setFinancialPerfBands(data, bands) {
   const numGrids = 3;
   const result = bands;
   let minPerf = Number.MAX_SAFE_INTEGER;
-  let maxPerf = 0;
+  let maxPerf = Number.MIN_SAFE_INTEGER;
 
   data.forEach((d) => {
     if (+d.budget !== 0 && +d.gross !== 0) {
-      const currPerf = Math.log(+d.gross / +d.budget);
+      const currPerf = getPerfScore(d);
       maxPerf = Math.max(
         currPerf,
         maxPerf,
@@ -228,7 +232,7 @@ function setFinancialPerfBands(data, bands) {
     budgetObj = {
       minPerf: currMin,
       maxPerf: currMax,
-      revenueBand: currBand,
+      perfBand: currBand,
     };
 
     prevPerf = currPerf;
@@ -237,6 +241,10 @@ function setFinancialPerfBands(data, bands) {
   }
 
   return result;
+}
+
+function getPerfScore(d) {
+  return Math.log(+d.gross / +d.budget);
 }
 
 /* returns the max genre x platform count for grouped bar chart: used to set bar chart height

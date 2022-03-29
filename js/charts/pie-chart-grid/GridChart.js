@@ -43,7 +43,7 @@ class GridChart {
     vis.bands = vis.setFinancialPerfBands(vis.data, vis.bands);
     vis.yAxisVals = new Array(3);
     vis.bands.forEach((s, i) => {
-      vis.yAxisVals[i] = s.revenueBand.toUpperCase();
+      vis.yAxisVals[i] = s.perfBand.toUpperCase();
     });
 
     vis.xScale = d3.scaleBand()
