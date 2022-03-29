@@ -7,7 +7,12 @@ class PieChart {
       margin: _config.margin || {
         top: 20, right: 20, bottom: 20, left: 60,
       },
+      colors: _config.colors,
+      utils: _config.functions,
     };
+    this.colorsList = new Array(_config.colors.length);
+    this.getAllPlatforms = _config.functions.getAllPlatforms;
+
     this.data = _data;
     this.initVis();
   }
@@ -18,34 +23,25 @@ class PieChart {
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
     vis.radius = Math.min(vis.width, vis.height) / (2 - vis.config.margin.top);
+    vis.platforms = vis.getAllPlatforms(vis.data);
 
-    vis.platforms = [
-      'Netflix',
-      'Hulu',
-      'Prime Video',
-      'Disney+',
-    ];
-    vis.colors = [
-      '#485908',
-      '#ae35bb',
-      '#e4c44c',
-      '#007ae6',
-    ];
+    const colorsProps = Object.getOwnPropertyNames(vis.config.colors.platformColors);
+
+    colorsProps.forEach((p, i) => {
+      vis.colorsList[i] = vis.config.colors.platformColors[p];
+    });
 
     vis.colorScale = d3.scaleOrdinal()
       .domain(vis.platforms)
-      .range(vis.colors);
+      .range(vis.colorsList);
 
     vis.svg = d3.select(vis.config.parentElement)
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
-    vis.title = vis.svg
-      .append('g')
+    vis.title = vis.svg.append('g')
       .append('text')
-      .style('font-family', 'arial')
-      .style('font-size', '15px')
-      .style('font-weight', 'bold')
+      .attr('class', 'chart-header')
       .text('Number of Movies by Platform')
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
   }
@@ -60,7 +56,6 @@ class PieChart {
     const vis = this;
 
     vis.platformMovieCount = d3.rollups(this.data, (v) => v.length, (d) => d.platform);
-    console.log(vis.platformMovieCount);
     const data = [
       vis.platformMovieCount[0][1],
       vis.platformMovieCount[1][1],
@@ -85,7 +80,7 @@ class PieChart {
     arcs.append('path')
       .attr('fill', (d, i) => {
         const value = d.data;
-        return vis.colors[i];
+        return vis.colorsList[i];
       })
       .attr('d', arc);
 
@@ -108,7 +103,7 @@ class PieChart {
     vis.legend.attr('transform', `translate(${190},0)`);
 
     vis.legend.selectAll('squares')
-      .data(vis.colors)
+      .data(vis.colorsList)
       .enter()
       .append('rect')
       .attr('x', 100)
@@ -124,7 +119,7 @@ class PieChart {
       .attr('x', 100 + size * 1.2)
       .attr('y', (d, i) => 100 + i * (size + 5) + (size / 2))
       .attr('text-anchor', 'left')
-      .style('fill', (d, i) => vis.colors[i])
+      .style('fill', (d, i) => vis.colorsList[i])
       .style('alignment-baseline', 'middle')
       .text((d) => d);
   }
