@@ -33,12 +33,12 @@ svg {
   background-color: #FFFAFA;
 }
 
-#innovHeader {
+#innov-header {
   font-size: 18px;
   font-weight: bold;
 }
 
-#innovXAxis, #innovYAxis {
+#innov-x-axis, #innov-y-axis {
   font-size: 15px;
   font-weight: bold;
 }

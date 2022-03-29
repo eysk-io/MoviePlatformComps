@@ -12,6 +12,7 @@ class InnovationChart {
     this.setScoreBands = setScoreBands;
     this.setRevenueBands = setRevenueBands;
     this.aggregateData = aggregateData;
+    this.setGridPos = setGridPos;
 
     this.initVis();
   }
@@ -52,10 +53,10 @@ class InnovationChart {
       .call(d3.axisBottom(vis.xScale)
         .tickSize(0))
       .selectAll('text')
-      .attr('id', 'innovXAxis');
+      .attr('id', 'innov-x-axis');
 
     vis.chart.append('text')
-      .attr('id', 'innovXAxisLabel')
+      .attr('id', 'innov-x-axis-label')
       .attr('text-anchor', 'end')
       .attr('x', width - 235)
       .attr('y', height + 60)
@@ -70,14 +71,14 @@ class InnovationChart {
       .call(d3.axisLeft(vis.yScale)
         .tickSize(0))
       .selectAll('text')
-      .attr('id', 'innovYAxis')
+      .attr('id', 'innov-y-axis')
       .style('text-anchor', 'end')
       .attr('dx', '1.7em')
       .attr('dy', '-0.5em')
       .attr('transform', 'rotate(-90)');
 
     vis.chart.append('text')
-      .attr('id', 'innovYAxisLabel')
+      .attr('id', 'innov-y-axis-label')
       .attr('text-anchor', 'end')
       .attr('x', -255)
       .attr('y', -65)
@@ -86,7 +87,7 @@ class InnovationChart {
       .text('Segmented Gross Revenue');
 
     vis.chart.append('text')
-      .attr('id', 'innovHeader')
+      .attr('id', 'innov-header')
       .attr('text-anchor', 'end')
       .attr('x', width + 55)
       .attr('y', -30)
@@ -101,22 +102,26 @@ class InnovationChart {
     const vis = this;
 
     vis.aggregatedData = vis.aggregateData(vis.data, vis.bands);
+    vis.aggregatedData = vis.setGridPos(vis.aggregatedData, vis.config);
 
     vis.renderVis();
   }
 
   renderVis() {
     const vis = this;
-    vis.chart.selectAll()
-      .data(vis.aggregatedData, (d) => `${d.group}:${d.variable}`)
-      .join('rect')
-      .attr('x', (d) => vis.xScale(d.group))
-      .attr('y', (d) => vis.yScale(d.variable))
-      .attr('rx', 10)
-      .attr('ry', 10)
-      .attr('width', vis.xScale.bandwidth())
-      .attr('height', vis.yScale.bandwidth())
-      .style('fill', (d) => vis.colors(d.value));
+    const pieCharts = vis.chart.selectAll()
+      .data(vis.aggregatedData)
+      .enter()
+      .append('g')
+      .attr('id', (_, i) => `innov-pie-chart-${i}`)
+      .append('g')
+      .attr('class', 'innov-pie-chart');
+
+    pieCharts.append('circle')
+      .attr('r', (d) => Math.sqrt((d.value * 10)))
+      .attr('cx', (d) => d.xPos)
+      .attr('cy', (d) => d.yPos)
+      .style('fill', 'red');
   }
 }
 
@@ -245,4 +250,34 @@ function aggregateData(data, bands) {
     }
   }
   return aggregatedData;
+}
+
+/**
+ * [
+ *  {xPos: 120, yPos: 600} (Low, Low) (Variable(x), Group(y))
+ *  {xPos: 360, yPos: 600} (Low, Med)
+ *  {xPos: 600, yPos: 600} (Low, High)
+ *  {xPos: 120, yPos: 360} (Med, Low)
+ *  {xPos: 360, yPos: 360} (Med, Med)
+ *  {xPos: 600, yPos: 360} (Med, High)
+ *  {xPos: 120, yPos: 120} (High, Low)
+ *  {xPos: 360, yPos: 120} (High, Med)
+ *  {xPos: 600, yPos: 120} (High, High)
+ * ]
+ */
+
+function setGridPos(data, config) {
+  const gridWidthStart = config.width / 6;
+  const gridHeightStart = config.height / 6;
+  for (let i = data.length - 1; i >= 0; i -= 1) {
+    const pos = {
+      xPos: gridWidthStart + gridWidthStart * 2 * ((data.length - 1 - i) % 3),
+      yPos: gridHeightStart + gridHeightStart * 2 * Math.floor(i / 3),
+    };
+
+    const dataIdx = data.length - 1 - i;
+    data[dataIdx] = { ...data[dataIdx], ...pos };
+  }
+
+  return data;
 }

@@ -17,8 +17,8 @@ d3.csv('data/preprocessedMovies2.csv')
         left: 90,
         right: 90,
       },
-      width: 600,
-      height: 600,
+      width: 900,
+      height: 900,
     }, data);
     innovationChart.updateVis();
 
