@@ -1,28 +1,25 @@
 * {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #EADDD0;
 }
 
 svg {
   margin: 10px
 }
 
-.chart-header {
-  font-size: 12px;
-}
-
 .row {
   display: flex;
-  justify-content: center;
-}
-
-.column {
-  display: flex;
-  justify-content: center;
+  justify-content: right;
 }
 
 .second {
   display: flex;
   flex-direction: column;
+  width: 50%;
+}
+
+.grid-chart-desc {
+  width: 75%;
 }
 
 .chart-header {

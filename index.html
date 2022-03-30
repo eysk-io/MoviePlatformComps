@@ -41,9 +41,23 @@ The size of each pie chart is a rough indicator of the total number of movies th
         <div class="row">
             <div class="column first">
                 <svg id="grid-chart"></svg>
-                <div id="mpa-rating-button-container">
+                <div id="mpa-rating-button-container"></div>
             </div>
             <div class="column second">
+                <p class="grid-chart-desc">
+                    The Grid Chart to the left <span><strong><i>(Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score)</i></strong></span> is divided into 3x3 bands.<br><br>
+
+                    The size of each pie chart is an indicator of the total number of movies in each grid. A larger pie chart represents a greater number of movies. If there is nothing in a grid, there are not any movies that fit within these measurements.<br><br>
+    
+                    <span><b>Segmented Financial Performance (Y-Axis):</b></span><br><br>
+                    "Financial Performance" is calculated by taking the <span><strong><i>log base e</i></strong></span> of each movie's Gross Revenue/Cost.<br><br>
+                    Each row of the y-axis (LOW, MED, HIGH) contains an equal range of Financial Performance, which is dynamically generated based on the selected data.<br><br>
+
+                    <span><b>Segmented Rotten Tomatoes Score (X-Axis):</b></span><br><br>
+                    Each column of the x-axis (LOW, MED, HIGH) contains an equal range of Rotten Tomatoes Score, which is statically set at [0, 100].<br><br>
+                    
+                    Each grid contains a pie chart showing the proportion of movies by platform for the intersection of the appropriate Financial Performance and Rotten Tomatoes Score.<br><br> 
+                </p>
                 <svg id="pie-chart"></svg>
                 <svg id="bar-chart"></svg>
             </div>
