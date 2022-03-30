@@ -33,6 +33,16 @@ svg {
   font-weight: bold;
 }
 
+#mpa-rating-button-container {
+  text-align: center;
+}
+
+.mpa-rating-button {
+  margin: 10px;
+  font-size: 20px;
+
+}
+
 #backgroundVideo {
   position: fixed;
   left: 0;
