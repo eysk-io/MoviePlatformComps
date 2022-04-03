@@ -1,8 +1,12 @@
 const utils = functions;
+let data;
+let gridChart;
+let pieChart;
+let barChart;
 
 d3.csv('data/preprocessedMovies2.csv')
   .then((_data) => {
-    let data = utils.collapseCategories(_data);
+    data = utils.collapseCategories(_data);
     data = utils.groupByPlatform(data);
 
     return { data };
@@ -10,7 +14,7 @@ d3.csv('data/preprocessedMovies2.csv')
   .then(({ data }) => {
     generateMpaRatingWidgets(data);
 
-    const gridChart = new GridChart({
+    gridChart = new GridChart({
       parentElement: '#grid-chart',
       margin: {
         top: 90,
@@ -25,19 +29,19 @@ d3.csv('data/preprocessedMovies2.csv')
     }, data);
     gridChart.updateVis();
 
-    const pieChart = new PieChart({
+    pieChart = new PieChart({
       parentElement: '#pie-chart',
       colors: config.colors,
       functions,
     }, data);
     pieChart.updateVis();
 
-    const barChart = new BarChart({
+    barChart = new BarChart({
       parentElement: '#bar-chart',
       colors: config.colors,
       functions,
     }, data);
-    // barChart.updateVis();
+    barChart.updateVis();
   });
 
 function generateMpaRatingWidgets(_data) {
@@ -64,3 +68,21 @@ function createFrag(htmlStr) {
   }
   return frag;
 }
+
+d3.selectAll('.pie-legend-btn').on('click', function() {
+  d3.select(this).classed('active', !d3.select(this).classed('active'));
+  let activePlatforms = [];
+  d3.selectAll('.pie-legend-btn.active').each(function() {
+     activePlatforms.push(d3.select(this).attr('data-platform')); 
+  });
+  let updatedData = data.filter(d => activePlatforms.includes(d.platform));
+  gridChart.data = updatedData;
+  gridChart.updateVis();
+  pieChart.data = updatedData;
+  pieChart.updateVis();
+  barChart.data = updatedData;
+  barChart.updateVis();
+})
+
+
+

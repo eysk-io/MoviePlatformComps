@@ -34,7 +34,30 @@
                     
                     Each grid contains a pie chart showing the proportion of movies by platform for the intersection of the appropriate Financial Performance and Rotten Tomatoes Score.<br><br> 
                 </p>
-                <svg id="pie-chart"></svg>
+                <table>
+                    <tr>
+                        <td>
+                    <svg id="pie-chart"></svg>
+                </td>
+                <td>
+                    <span>
+                        <ul class="pie-legend">
+                            <li class="pie-legend-btn" data-platform="Netflix">
+                                <span class="square" id="netflix" />&emsp;&ensp;Netflix
+                            </li>
+                            <li class="pie-legend-btn" data-platform="Hulu">
+                                <span class="square" id="hulu" />&emsp;&ensp;Hulu
+                            </li>
+                            <li class="pie-legend-btn" data-platform="Prime Video">
+                                <span class="square" id="amazon" />&emsp;&ensp;Prime Video
+                            </li>
+                            <li class="pie-legend-btn" data-platform="Disney+">
+                                <span class="square" id="disney" />&emsp;&ensp;Disney+
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
                 <svg id="bar-chart"></svg>
             </div>
         </div>
