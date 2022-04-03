@@ -76,6 +76,9 @@ d3.selectAll('.pie-legend-btn').on('click', function() {
      activePlatforms.push(d3.select(this).attr('data-platform')); 
   });
   let updatedData = data.filter(d => activePlatforms.includes(d.platform));
+  if (updatedData.length == 0) {
+    updatedData = data;
+  }
   gridChart.data = updatedData;
   gridChart.updateVis();
   pieChart.data = updatedData;
