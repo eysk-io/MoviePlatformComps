@@ -3,9 +3,9 @@ const config = {
   colors: {
     platformColors: {
       netflix: '#485908',
+      hulu: '#ae35bb',
       amazon: '#e4c44c',
       disney: '#007ae6',
-      hulu: '#ae35bb',
     },
     barColors: [
       '#5c252b',
