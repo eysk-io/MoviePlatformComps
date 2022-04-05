@@ -8,6 +8,7 @@ class BarChart {
         top: 90, right: 10, bottom: 20, left: 60,
       },
       colors: _config.colors,
+      allGenres: _config.genres,
     };
     this.rawData = _rawData;
 
@@ -166,7 +167,7 @@ class BarChart {
     // Add one checkbox in the legend for each label
     const size = 15;
     vis.svg.selectAll('boxes')
-      .data(vis.genres)
+      .data(vis.config.allGenres)
       .join('rect')
       .attr('class', 'checkbox-barchart')
       .attr('x', (d, i) => vis.config.margin.left + i * (size + 41))
@@ -177,7 +178,7 @@ class BarChart {
 
     // Add legend label
     vis.svg.selectAll('labels')
-      .data(vis.genres)
+      .data(vis.config.allGenres)
       .join('text')
       .attr('class', 'label-barchart widget')
       .attr('x', (d, i) => vis.config.margin.left + i * (size + 42))

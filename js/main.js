@@ -1,16 +1,21 @@
 const utils = functions;
+const selected = [];
 
 d3.csv('data/preprocessedMovies2.csv')
   .then((_data) => {
     const data = utils.collapseCategories(_data);
     return utils.groupByPlatform(data);
   })
-  .then((data) => {
-    renderAll(data);
-    return data;
+  .then((rawData) => {
+    const dataObj = {
+      rawData,
+      data: rawData,
+      allGenres: getAllGenres(rawData),
+    };
+    renderAll(dataObj);
   });
 
-function renderCharts(data) {
+function renderCharts(dataObj) {
   const gridChart = new GridChart({
     parentElement: '#grid-chart',
     margin: {
@@ -23,32 +28,44 @@ function renderCharts(data) {
     height: 900,
     colors: config.colors,
     functions,
-  }, data);
+  }, dataObj.data);
   // gridChart.updateVis();
 
-  const pieChart = new PieChart({
-    parentElement: '#pie-chart',
-    colors: config.colors,
-    functions,
-  }, data);
+  // const pieChart = new PieChart({
+  //   parentElement: '#pie-chart',
+  //   colors: config.colors,
+  //   functions,
+  // }, dataObj.data);
   // pieChart.updateVis();
 
   const barChart = new BarChart({
     parentElement: '#bar-chart',
     colors: config.colors,
+    genres: dataObj.allGenres,
     functions,
-  }, data);
+  }, dataObj.data);
   // barChart.updateVis();
 }
-function renderAll(data) {
-  generateMpaRatingWidgets(data);
-  renderCharts(data);
+function renderAll(dataObj) {
+  // generateMpaRatingWidgets(dataObj.data);
+  renderCharts(dataObj);
 
   const widgets = document.querySelectorAll('.widget');
   widgets.forEach((elt) => {
     elt.addEventListener('click', (e) => {
-      // eslint-disable-next-line no-console
-      console.log(e.target.innerHTML);
+      selected.push(e.target.innerHTML);
+
+      const filtered = dataObj.rawData.filter((d) => {
+        let exists = false;
+        selected.forEach((s) => {
+          if (Object.values(d).includes(s)) {
+            exists = true;
+          }
+        });
+        return exists;
+      });
+
+      dataObj = { ...dataObj, data: filtered };
 
       const allElts = [
         document.getElementById('grid-chart'),
@@ -59,7 +76,7 @@ function renderAll(data) {
 
       removeChildren(allElts);
 
-      renderAll(data);
+      renderAll(dataObj);
     });
   });
 }
@@ -95,4 +112,14 @@ function createFrag(htmlStr) {
     frag.appendChild(temp.firstChild);
   }
   return frag;
+}
+
+function getAllGenres(data) {
+  const allGenres = new Set();
+
+  data.forEach((d) => {
+    allGenres.add(d.genre);
+  });
+
+  return allGenres;
 }
