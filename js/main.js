@@ -50,27 +50,25 @@ function renderAll(data) {
       // eslint-disable-next-line no-console
       console.log(e.target.innerHTML);
 
-      const gridChartElt = document.getElementById('grid-chart');
-      const pieChartElt = document.getElementById('pie-chart');
-      const barChartElt = document.getElementById('bar-chart');
-      const mpaRatingsWidgets = document.getElementById('mpa-rating-button-container');
+      const allElts = [
+        document.getElementById('grid-chart'),
+        document.getElementById('pie-chart'),
+        document.getElementById('bar-chart'),
+        document.getElementById('mpa-rating-button-container'),
+      ];
 
-      while (mpaRatingsWidgets.firstChild) {
-        mpaRatingsWidgets.removeChild(mpaRatingsWidgets.firstChild);
-      }
-
-      while (gridChartElt.firstChild) {
-        gridChartElt.removeChild(gridChartElt.firstChild);
-      }
-      while (pieChartElt.firstChild) {
-        pieChartElt.removeChild(pieChartElt.firstChild);
-      }
-      while (barChartElt.firstChild) {
-        barChartElt.removeChild(barChartElt.firstChild);
-      }
+      removeChildren(allElts);
 
       renderAll(data);
     });
+  });
+}
+
+function removeChildren(elts) {
+  elts.forEach((elt) => {
+    while (elt.firstChild) {
+      elt.removeChild(elt.firstChild);
+    }
   });
 }
 
