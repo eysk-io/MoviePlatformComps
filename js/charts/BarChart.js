@@ -179,7 +179,7 @@ class BarChart {
     vis.svg.selectAll('labels')
       .data(vis.genres)
       .join('text')
-      .attr('class', 'label-barchart')
+      .attr('class', 'label-barchart widget')
       .attr('x', (d, i) => vis.config.margin.left + i * (size + 42))
       .attr('y', vis.config.margin.bottom + 20 + size * 1.8)
       .text((d) => d)

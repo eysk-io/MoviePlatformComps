@@ -38,6 +38,13 @@ d3.csv('data/preprocessedMovies2.csv')
       functions,
     }, data);
     // barChart.updateVis();
+
+    const widgets = document.querySelectorAll('.widget');
+    widgets.forEach((elt) => {
+      elt.addEventListener('click', (e) => {
+        console.log(e.target.innerHTML);
+      });
+    });
   });
 
 function generateMpaRatingWidgets(_data) {
@@ -49,7 +56,7 @@ function generateMpaRatingWidgets(_data) {
   widgets.sort();
 
   widgets.forEach((w) => {
-    const button = createFrag(`<button class="mpa-rating-button">${w}</button>`);
+    const button = createFrag(`<button class="mpa-rating-button widget">${w}</button>`);
     document.getElementById('mpa-rating-button-container').appendChild(button);
   });
 }

@@ -116,6 +116,7 @@ class PieChart {
       .data(vis.platforms)
       .enter()
       .append('text')
+      .attr('class', 'widget')
       .attr('x', 100 + size * 1.2)
       .attr('y', (d, i) => 100 + i * (size + 5) + (size / 2))
       .attr('text-anchor', 'left')
