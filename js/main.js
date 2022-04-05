@@ -1,16 +1,32 @@
 const utils = functions;
-const selected = [];
+const selected = {
+  genres: [],
+  mpaa: [],
+  platforms: [],
+};
 
 d3.csv('data/preprocessedMovies2.csv')
-  .then((_data) => {
-    const data = utils.collapseCategories(_data);
-    return utils.groupByPlatform(data);
+  .then((data) => {
+    let rawData = utils.collapseCategories(data);
+    rawData = utils.groupByPlatform(rawData);
+
+    return rawData;
   })
   .then((rawData) => {
+    const allGenreSet = getAllGenres(rawData);
+    const allMpaaSet = getAllMpaa(rawData);
+    const allPlatformsSet = getAllPlatforms(rawData);
+
+    selected.genres = Array.from(allGenreSet);
+    selected.mpaa = Array.from(allMpaaSet);
+    selected.platforms = Array.from(allPlatformsSet);
+
     const dataObj = {
       rawData,
       data: rawData,
-      allGenres: getAllGenres(rawData),
+      allGenres: allGenreSet,
+      allMpaa: allMpaaSet,
+      allPlatforms: allPlatformsSet,
     };
     renderAll(dataObj);
   });
@@ -34,6 +50,7 @@ function renderCharts(dataObj) {
   // const pieChart = new PieChart({
   //   parentElement: '#pie-chart',
   //   colors: config.colors,
+  //   platforms: dataObj.allPlatforms,
   //   functions,
   // }, dataObj.data);
   // pieChart.updateVis();
@@ -47,22 +64,59 @@ function renderCharts(dataObj) {
   // barChart.updateVis();
 }
 function renderAll(dataObj) {
-  // generateMpaRatingWidgets(dataObj.data);
+  generateMpaRatingWidgets(dataObj.rawData);
   renderCharts(dataObj);
 
   const widgets = document.querySelectorAll('.widget');
   widgets.forEach((elt) => {
     elt.addEventListener('click', (e) => {
-      selected.push(e.target.innerHTML);
+      const filterVal = e.target.innerHTML;
+      if (dataObj.allGenres.has(filterVal)) {
+        if (selected.genres.includes(filterVal)) {
+          const idx = selected.genres.indexOf(filterVal);
+          selected.genres.splice(idx, 1);
+        } else {
+          selected.genres.push(filterVal);
+        }
+      } else if (dataObj.allMpaa.has(filterVal)) {
+        if (selected.mpaa.includes(filterVal)) {
+          const idx = selected.mpaa.indexOf(filterVal);
+          selected.mpaa.splice(idx, 1);
+        } else {
+          selected.mpaa.push(filterVal);
+        }
+      } else if (dataObj.allPlatforms.has(filterVal)) {
+        if (selected.platforms.includes(filterVal)) {
+          const idx = selected.platforms.indexOf(filterVal);
+          selected.platforms.splice(idx, 1);
+        } else {
+          selected.platforms.push(filterVal);
+        }
+      }
 
       const filtered = dataObj.rawData.filter((d) => {
-        let exists = false;
-        selected.forEach((s) => {
+        let genreExists = false;
+        selected.genres.forEach((s) => {
           if (Object.values(d).includes(s)) {
-            exists = true;
+            genreExists = true;
           }
         });
-        return exists;
+
+        let mpaaExists = false;
+        selected.mpaa.forEach((s) => {
+          if (Object.values(d).includes(s)) {
+            mpaaExists = true;
+          }
+        });
+
+        let platformExists = false;
+        selected.platforms.forEach((s) => {
+          if (Object.values(d).includes(s)) {
+            platformExists = true;
+          }
+        });
+
+        return genreExists && mpaaExists && platformExists;
       });
 
       dataObj = { ...dataObj, data: filtered };
@@ -122,4 +176,24 @@ function getAllGenres(data) {
   });
 
   return allGenres;
+}
+
+function getAllMpaa(data) {
+  const allMpaa = new Set();
+
+  data.forEach((d) => {
+    allMpaa.add(d.rating);
+  });
+
+  return allMpaa;
+}
+
+function getAllPlatforms(data) {
+  const allPlatforms = new Set();
+
+  data.forEach((d) => {
+    allPlatforms.add(d.platform);
+  });
+
+  return allPlatforms;
 }
