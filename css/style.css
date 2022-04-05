@@ -89,11 +89,11 @@ td {
 }  
 
 .pie-legend-btn.active {
-  color: black;
+  opacity: 1;
 }
 
 .pie-legend-btn {
-  color: grey;
+  opacity: 0.5;
 }
 
 #netflix {
