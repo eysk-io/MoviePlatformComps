@@ -75,6 +75,7 @@ d3.selectAll('.pie-legend-btn').on('click', function () {
   let updatedData = data.filter((d) => activePlatforms.includes(d.platform));
   if (updatedData.length === 0) {
     updatedData = data;
+    d3.selectAll('.pie-legend-btn').classed('active', true);
   }
   pieChart.data = updatedData;
   pieChart.updateVis();
