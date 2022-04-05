@@ -8,6 +8,8 @@ class BarChart {
         top: 90, right: 10, bottom: 20, left: 60,
       },
       colors: _config.colors,
+      allGenres: _config.allGenres,
+      allPlatforms: _config.allPlatforms,
     };
     this.rawData = _rawData;
 
@@ -29,13 +31,16 @@ class BarChart {
 
     vis.xScale = d3.scaleBand()
       .range([0, vis.width])
+      // .domain(vis.config.colors.allPlatforms)
       .padding([0.3]);
 
     vis.xSubGroupScale = d3.scaleBand()
+      // .domain(vis.config.colors.allGenres)
       .range([0, vis.xScale.bandwidth()])
       .padding([0.2]);
 
     vis.colourScale = d3.scaleOrdinal()
+      // .domain(vis.config.colors.allGenres)
       .range(vis.config.colors.barColors);
 
     vis.xAxis = d3.axisBottom(vis.xScale)
@@ -75,12 +80,14 @@ class BarChart {
 
   updateVis() {
     const vis = this;
+    console.log('vis.rawData.length:',vis.rawData.length);
 
-    const platformToGenres = new Map();
-    this.setGenreCounts(platformToGenres, this.rawData);
+    vis.barData = [];
+    vis.barData = vis.setGenreCounts(vis.rawData);
 
-    this.barData = [];
-    this.barData = this.crosstabFormat(platformToGenres);
+    // Specify accessor functions
+    vis.xValue = d => d.key;
+    vis.yValue = d => d.value;
 
     vis.updateScales();
     vis.renderVis();
@@ -122,30 +129,32 @@ class BarChart {
     vis.maxBarCount = vis.getMaxGenreCount(vis.rawData) + 20;
     vis.platforms = d3.map(vis.barData, (d) => d.group);
     vis.genres = vis.barData.columns.slice(1);
+    console.log('vis.genres:',vis.genres);
 
     vis.yScale
       .domain([0, vis.maxBarCount]);
 
     vis.xScale
-      .domain(vis.platforms);
+      .domain(vis.config.colors.allPlatforms);
 
     vis.xSubGroupScale
-      .domain(vis.genres)
+      .domain(vis.config.colors.allGenres)
       .range([0, vis.xScale.bandwidth()]);
 
     vis.colourScale
-      .domain(vis.genres);
+      .domain(vis.config.colors.allGenres);
   }
 
   /* Purpose: Create and render a grouped bar chart */
   renderBars() {
     const vis = this;
+    console.log('vis.barData:',vis.barData);
 
     // Bind data to visual elements using .join() for genre & platform
     vis.svg.append('g')
       .selectAll('g')
-      // join data: loop group per group
-      .data(vis.barData)
+       // join data: loop group per group
+      .data(vis.barData, vis.xValue)
       .join('g')
       .attr('class', 'group platform-barchart')
       .attr('transform', (d) => `translate(${vis.xScale(d.group)},0)`)
@@ -153,10 +162,10 @@ class BarChart {
       .data((d) => vis.genres.map((key) => ({ key, value: d[key] })))
       .join('rect')
       .attr('class', 'subgroup genre-barchart')
-      .attr('x', (d) => vis.xSubGroupScale(d.key) + vis.config.margin.left)
-      .attr('y', (d) => vis.yScale(d.value) + vis.config.margin.top)
+      .attr('x', (d) => vis.xSubGroupScale(vis.xValue(d)) + vis.config.margin.left)
+      .attr('y', (d) => vis.yScale(vis.yValue(d)) + vis.config.margin.top)
       .attr('width', vis.xSubGroupScale.bandwidth())
-      .attr('height', (d) => vis.height - vis.yScale(d.value))
+      .attr('height', (d) => vis.height - vis.yScale(vis.yValue(d)))
       .attr('fill', (d) => vis.colourScale(d.key));
   }
 
@@ -185,6 +194,6 @@ class BarChart {
       .text((d) => d)
       .attr('text-anchor', 'middle')
       .style('alignment-baseline', 'middle')
-      .style('font-size', '11.5px');
+      .style('font-size', '12px');
   }
 }

@@ -40,8 +40,7 @@ d3.csv('data/preprocessedMovies2.csv')
       parentElement: '#bar-chart',
       colors: config.colors,
       functions,
-    }, data);
-    barChart.updateVis();
+    }, data);    
   });
 
 function generateMpaRatingWidgets(_data) {
@@ -83,7 +82,7 @@ d3.selectAll('.pie-legend-btn').on('click', function() {
   gridChart.updateVis();
   pieChart.data = updatedData;
   pieChart.updateVis();
-  barChart.data = updatedData;
+  barChart.rawData = updatedData;
   barChart.updateVis();
 })
 

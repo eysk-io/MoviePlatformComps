@@ -265,7 +265,8 @@ function getMaxGenreCount(rawData) {
  *         rawData: expanded movies dataset
  * returns: nothing
  * */
-function setGenreCounts(platformToGenres, rawData) {
+function setGenreCounts(rawData) {
+  const platformToGenres = new Map();
   rawData.sort((a, b) => d3.ascending(a.genre, b.genre));
   const allGenres = new Set();
   rawData.forEach((d) => allGenres.add(d.genre));
@@ -282,6 +283,7 @@ function setGenreCounts(platformToGenres, rawData) {
     allCounts.set(d.genre, currCount + 1);
     platformToGenres.set(d.platform, allCounts);
   });
+  return crosstabFormat(platformToGenres);
 }
 
 /* converts aggregated genre count map into a flat crosstab object array for grouped bar chart
@@ -306,7 +308,6 @@ function crosstabFormat(genreCounts) {
     i += 1;
   });
   keys = Object.keys(barData[0]);
-
   barData.columns = keys;
 
   return barData;
