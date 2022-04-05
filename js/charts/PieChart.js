@@ -44,10 +44,10 @@ class PieChart {
       .attr('class', 'chart-header')
       .text('Number of Movies by Platform')
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-  }
+    // }
 
-  updateVis() {
-    const vis = this;
+    // updateVis() {
+    //   const vis = this;
 
     vis.renderVis();
   }

@@ -70,11 +70,11 @@ class BarChart {
       .append('g')
       .attr('class', 'axis y-axis');
 
-    vis.updateVis();
-  }
+    //   vis.updateVis();
+    // }
 
-  updateVis() {
-    const vis = this;
+    // updateVis() {
+    // const vis = this;
 
     const platformToGenres = new Map();
     this.setGenreCounts(platformToGenres, this.rawData);
