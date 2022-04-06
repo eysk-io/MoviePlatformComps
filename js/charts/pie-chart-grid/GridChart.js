@@ -95,10 +95,12 @@ class GridChart {
       .attr('x', width + 8)
       .attr('y', -25)
       .text(('Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score'));
-    // }
 
-    // updateVis() {
-    // const vis = this;
+    vis.updateVis();
+  }
+
+  updateVis() {
+    const vis = this;
     vis.platforms = getAllPlatforms(vis.data);
     vis.aggregatedData = vis.aggregateData(vis.data, vis.bands, vis.platforms);
     vis.aggregatedData = vis.setGridPos(vis.aggregatedData, vis.config);

@@ -36,10 +36,12 @@ class PieChart {
       .text('Number of Movies by Platform')
       .style('font-size', 16)
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-    // }
 
-    // updateVis() {
-    //   const vis = this;
+    vis.updateVis();
+  }
+
+  updateVis() {
+    const vis = this;
 
     vis.renderVis();
   }

@@ -26,6 +26,8 @@ class MultiViewPieChart {
     vis.platforms = new Array(numValues - 1);
 
     vis.radius = 0;
+
+    vis.updateVis();
   }
 
   updateVis() {

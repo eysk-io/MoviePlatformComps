@@ -3,6 +3,8 @@ const utils = functions;
 const ejjLib = ejj;
 
 let pieChart;
+let barChart;
+let gridChart;
 
 const selected = {
   genres: [],
@@ -39,7 +41,7 @@ d3.csv('data/preprocessedMovies2.csv')
   });
 
 function renderCharts(dataObj) {
-  const gridChart = new GridChart({
+  gridChart = new GridChart({
     parentElement: '#grid-chart',
     margin: {
       top: 90,
@@ -52,7 +54,6 @@ function renderCharts(dataObj) {
     colors: config.colors,
     functions,
   }, dataObj.data);
-  // gridChart.updateVis();
 
   pieChart = new PieChart({
     parentElement: '#pie-chart',
@@ -61,13 +62,12 @@ function renderCharts(dataObj) {
     functions,
   }, dataObj.data);
 
-  const barChart = new BarChart({
+  barChart = new BarChart({
     parentElement: '#bar-chart',
     colors: config.colors,
     genres: dataObj.allGenres,
     functions,
   }, dataObj.data);
-  // barChart.updateVis();
 
   addListeners(dataObj);
 }
@@ -79,36 +79,18 @@ function addListeners(dataObj) {
       const filterVal = e.target.innerHTML;
       const filtered = ejjLib.filterBySelected(filterVal, selected, dataObj);
 
+      elt.classList.toggle('active');
+
       dataObj = { ...dataObj, data: filtered };
-
-      const allElts = [
-        document.getElementById('grid-chart'),
-        document.getElementById('pie-chart'),
-        document.getElementById('bar-chart'),
-        document.getElementById('mpa-rating-button-container'),
-      ];
-
-      ejjLib.removeChildren(allElts);
 
       pieChart.data = dataObj.data;
       pieChart.updateVis();
 
-      // renderAll(dataObj);
+      barChart.data = dataObj.data;
+      barChart.updateVis();
+
+      gridChart.data = dataObj.data;
+      gridChart.updateVis();
     });
   });
 }
-
-// d3.selectAll('.pie-legend-btn').on('click', function () {
-//   d3.select(this).classed('active', !d3.select(this).classed('active'));
-//   const activePlatforms = [];
-//   d3.selectAll('.pie-legend-btn.active').each(function () {
-//     activePlatforms.push(d3.select(this).attr('data-platform'));
-//   });
-//   let updatedData = data.filter((d) => activePlatforms.includes(d.platform));
-//   if (updatedData.length === 0) {
-//     updatedData = data;
-//     d3.selectAll('.pie-legend-btn').classed('active', true);
-//   }
-//   pieChart.data = updatedData;
-//   pieChart.updateVis();
-// });
