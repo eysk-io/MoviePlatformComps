@@ -1,8 +1,9 @@
+/* eslint-disable prefer-destructuring */
 class PieChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 400,
+      containerWidth: _config.containerWidth || 300,
       containerHeight: _config.containerHeight || 300,
       margin: _config.margin || {
         top: 20, right: 20, bottom: 20, left: 60,
@@ -25,16 +26,6 @@ class PieChart {
     vis.radius = Math.min(vis.width, vis.height) / (2 - vis.config.margin.top);
     vis.platforms = vis.getAllPlatforms(vis.data);
 
-    const colorsProps = Object.getOwnPropertyNames(vis.config.colors.platformColors);
-
-    colorsProps.forEach((p, i) => {
-      vis.colorsList[i] = vis.config.colors.platformColors[p];
-    });
-
-    vis.colorScale = d3.scaleOrdinal()
-      .domain(vis.platforms)
-      .range(vis.colorsList);
-
     vis.svg = d3.select(vis.config.parentElement)
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
@@ -43,6 +34,7 @@ class PieChart {
       .append('text')
       .attr('class', 'chart-header')
       .text('Number of Movies by Platform')
+      .style('font-size', 16)
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
     // }
 
@@ -54,74 +46,42 @@ class PieChart {
 
   renderVis() {
     const vis = this;
-
+    vis.platformMap = {
+      Netflix: 'netflix',
+      Hulu: 'hulu',
+      'Prime Video': 'amazon',
+      'Disney+': 'disney',
+    };
     vis.platformMovieCount = d3.rollups(this.data, (v) => v.length, (d) => d.platform);
-    const data = [
-      vis.platformMovieCount[0][1],
-      vis.platformMovieCount[1][1],
-      vis.platformMovieCount[2][1],
-      vis.platformMovieCount[3][1],
-    ];
+    vis.platformMovieCountJSON = {};
+    vis.platformMovieCount.forEach((element) => {
+      vis.platformMovieCountJSON[element[0]] = element[1];
+    });
 
     const chart = vis.svg.append('g')
       .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
 
-    const pie = d3.pie();
+    const pie = d3.pie()
+      .value((d) => d[1]);
+    const pieData = pie(Object.entries(vis.platformMovieCountJSON));
 
-    const arc = d3.arc()
+    const arcGenerator = d3.arc()
       .innerRadius(0)
       .outerRadius(100);
 
-    const arcs = chart.selectAll('arc')
-      .data(pie(data))
-      .enter()
-      .append('g');
+    const arcs = chart.selectAll('path')
+      .data(pieData)
+      .join('path')
+      .attr('fill', (d, i) => vis.config.colors.platformColors[vis.platformMap[d.data[0]]])
+      .attr('d', arcGenerator);
 
-    arcs.append('path')
-      .attr('fill', (d, i) => {
-        const value = d.data;
-        return vis.colorsList[i];
-      })
-      .attr('d', arc);
-
-    arcs.append('text')
-      .text((d) => d.data)
-      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
-      .style('text-anchor', 'middle')
-      .style('font-size', 14);
-
-    arcs.append('text')
-      .text((d) => d.data)
-      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
+    const labels = chart.selectAll('text')
+      .data(pieData)
+      .join('text')
+      .text((d) => d.data[1])
+      .attr('transform', (d) => `translate(${arcGenerator.centroid(d)})`)
       .style('text-anchor', 'middle')
       .style('font-size', 14)
       .style('fill', 'white');
-
-    const size = 18;
-    vis.legend = vis.svg.append('g');
-
-    vis.legend.attr('transform', `translate(${190},0)`);
-
-    vis.legend.selectAll('squares')
-      .data(vis.colorsList)
-      .enter()
-      .append('rect')
-      .attr('x', 100)
-      .attr('y', (d, i) => 100 + i * (size + 5))
-      .attr('width', size)
-      .attr('height', size)
-      .style('fill', (d) => d);
-
-    vis.legend.selectAll('labels')
-      .data(vis.platforms)
-      .enter()
-      .append('text')
-      .attr('class', 'widget')
-      .attr('x', 100 + size * 1.2)
-      .attr('y', (d, i) => 100 + i * (size + 5) + (size / 2))
-      .attr('text-anchor', 'left')
-      .style('fill', (d, i) => vis.colorsList[i])
-      .style('alignment-baseline', 'middle')
-      .text((d) => d);
   }
 }

@@ -67,10 +67,47 @@ svg {
   color:  black;
 }
 
-.center {
-  margin: 0;
-  position: absolute;
-  top: 530px;
-  left: 50%;
+.square {
+  border-style: solid;
+  border-color: black;
+  display: inline-block;
+  height: 13px;
+  width: 13px;
+}
 
+ul {
+  list-style-type: none;
+}
+
+table {
+  width: 30%
+}
+
+td {
+  width: 100%;
+  white-space: nowrap;
+}  
+
+.pie-legend-btn.active {
+  opacity: 1;
+}
+
+.pie-legend-btn {
+  opacity: 0.5;
+}
+
+#netflix {
+  background-color: #485908;
+}
+
+#hulu {
+  background-color: #ae35bb;
+}
+
+#amazon {
+  background-color: #e4c44c;
+}
+
+#disney {
+  background-color: #007ae6;
 }
