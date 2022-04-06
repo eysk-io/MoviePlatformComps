@@ -96,7 +96,6 @@ class BarChart {
     const vis = this;
 
     vis.renderBars();
-    // vis.renderLegend();
 
     vis.xAxisG
       .call(vis.xAxis)
@@ -106,20 +105,6 @@ class BarChart {
       .call(vis.yAxis)
       .call((g) => g.select('.domain').remove())
       .selectAll('.tick line').attr('opacity', 0.25);
-  }
-
-  /* Purpose: Update barChart view based on current selected filters
-   * @param {Array} _data = array of data objects: movies
-   * @param {string} _selectedGenres =
-   *    string representing genres selected in barChart view; null if none selected
-   */
-  update(_data) {
-    const vis = this;
-
-    // Update view with given data array
-    vis.rawData = _data;
-    vis.bars.exit().remove();
-    vis.updateVis();
   }
 
   /* Purpose: update domain of scales */
