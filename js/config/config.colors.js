@@ -18,5 +18,22 @@ const config = {
       '#93cdf7',
       '#ff9a3d',
     ],
+    allGenres: [
+      'Action',
+      'Adventure',
+      'Animation',
+      'Biography',
+      'Comedy',
+      'Crime',
+      'Drama',
+      'Horror',
+      'Other'
+    ],
+    allPlatforms: [
+      'Netflix',
+      'Hulu',
+      'Prime Video',
+      'Disney+'
+    ]
   },
 };
