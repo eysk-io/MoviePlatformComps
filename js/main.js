@@ -65,7 +65,8 @@ function renderCharts(dataObj) {
   barChart = new BarChart({
     parentElement: '#bar-chart',
     colors: config.colors,
-    genres: dataObj.allGenres,
+    genres: config.colors.allGenres,
+    platforms: config.colors.allPlatforms,
     functions,
   }, dataObj.data);
 

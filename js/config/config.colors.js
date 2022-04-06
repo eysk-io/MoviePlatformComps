@@ -27,13 +27,13 @@ const config = {
       'Crime',
       'Drama',
       'Horror',
-      'Other'
+      'Other',
     ],
     allPlatforms: [
       'Netflix',
       'Hulu',
       'Prime Video',
-      'Disney+'
-    ]
+      'Disney+',
+    ],
   },
 };

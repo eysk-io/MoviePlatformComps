@@ -265,11 +265,9 @@ function getMaxGenreCount(rawData) {
  *         rawData: expanded movies dataset
  * returns: nothing
  * */
-function setGenreCounts(rawData) {
+function setGenreCounts(rawData, allGenres) {
   const platformToGenres = new Map();
   rawData.sort((a, b) => d3.ascending(a.genre, b.genre));
-  const allGenres = new Set();
-  rawData.forEach((d) => allGenres.add(d.genre));
 
   let allCounts;
   rawData.forEach((d) => {

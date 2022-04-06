@@ -1,5 +1,5 @@
 class BarChart {
-  constructor(_config, _rawData) {
+  constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
       containerWidth: 550,
@@ -8,10 +8,10 @@ class BarChart {
         top: 90, right: 10, bottom: 20, left: 60,
       },
       colors: _config.colors,
-      allGenres: _config.allGenres,
-      allPlatforms: _config.allPlatforms,
+      allGenres: _config.genres,
+      allPlatforms: _config.platforms,
     };
-    this.rawData = _rawData;
+    this.data = _data;
 
     this.getMaxGenreCount = _config.functions.getMaxGenreCount;
     this.setGenreCounts = _config.functions.setGenreCounts;
@@ -24,7 +24,7 @@ class BarChart {
     const vis = this;
 
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
-    vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;    
+    vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
     vis.svg = d3.select(vis.config.parentElement)
       .attr('width', vis.config.containerWidth)
@@ -35,12 +35,12 @@ class BarChart {
       .attr('x', vis.config.margin.left)
       .attr('y', vis.config.margin.bottom)
       .text('Number of Movies by Genre for Each Platform');
-    
+
     vis.chartArea = vis.svg.append('g')
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
-  
-    vis.chart = vis.chartArea.append('g')
-    
+
+    vis.chart = vis.chartArea.append('g');
+
     vis.yScale = d3.scaleLinear()
       .range([vis.height, 0]);
 
@@ -80,16 +80,18 @@ class BarChart {
 
   updateVis() {
     const vis = this;
+    const { config, data } = vis;
+    const { allGenres, allPlatforms } = config;
 
     vis.barData = [];
-    vis.barData = vis.setGenreCounts(vis.rawData);
+    vis.barData = vis.setGenreCounts(data, allGenres, allPlatforms);
 
     // Specify accessor functions
-    vis.xValue = d => d.key;
-    vis.yValue = d => d.value;
+    vis.xValue = (d) => d.key;
+    vis.yValue = (d) => d.value;
 
     vis.updateScales();
-    vis.renderVis();    
+    vis.renderVis();
   }
 
   renderVis() {
@@ -111,11 +113,11 @@ class BarChart {
   updateScales() {
     const vis = this;
 
-    vis.maxBarCount = vis.getMaxGenreCount(vis.rawData) + 20;
+    vis.maxBarCount = vis.getMaxGenreCount(vis.data) + 20;
     vis.platforms = d3.map(vis.barData, (d) => d.group);
     // vis.genres = vis.barData.columns.slice(1);
     // vis.platforms = vis.config.colors.allPlatforms;
-    vis.genres = vis.config.colors.allGenres;    
+    vis.genres = vis.config.colors.allGenres;
 
     vis.yScale
       .domain([0, vis.maxBarCount]);
@@ -134,24 +136,24 @@ class BarChart {
   /* Purpose: Create and render a grouped bar chart */
   renderBars() {
     const vis = this;
-    
+
     // Bind data to visual elements using .join() for genre & platform
-    const bars = vis.chart.selectAll('.bar')      
-       // join data: loop group per subgroup
+    const bars = vis.chart.selectAll('.bar')
+      // join data: loop group per subgroup
       .data(vis.barData, vis.xValue)
       .join('g')
       .attr('class', 'bar group platform-barchart')
-      .attr('transform', d => `translate(${vis.xScale(d.group)},0)`)
-    // bars
+      .attr('transform', (d) => `translate(${vis.xScale(d.group)},0)`)
+      // bars
       .selectAll('rect')
-      .data(d => vis.genres.map((key) => ({ key, value: d[key] })))
+      .data((d) => vis.genres.map((key) => ({ key, value: d[key] })))
       .join('rect')
       .attr('class', 'bar subgroup genre-barchart')
-      .attr('x', d => vis.xSubGroupScale(vis.xValue(d)) + vis.config.margin.right)
-      .attr('y', d => vis.yScale(vis.yValue(d)))
+      .attr('x', (d) => vis.xSubGroupScale(vis.xValue(d)) + vis.config.margin.right)
+      .attr('y', (d) => vis.yScale(vis.yValue(d)))
       .attr('width', vis.xSubGroupScale.bandwidth())
-      .attr('height', d => vis.height - vis.yScale(d.value))
-      .attr('fill', d => vis.colourScale(d.key));
+      .attr('height', (d) => vis.height - vis.yScale(d.value))
+      .attr('fill', (d) => vis.colourScale(d.key));
   }
 
   /* Purpose: Create and render a legend (checkbox & label) */
@@ -169,7 +171,7 @@ class BarChart {
       .attr('y', vis.config.margin.bottom + 20)
       .attr('width', size)
       .attr('height', size)
-      .style('fill', d => vis.colourScale(d));
+      .style('fill', (d) => vis.colourScale(d));
 
     // Add legend label
     vis.svg.selectAll('labels')
@@ -178,7 +180,7 @@ class BarChart {
       .attr('class', 'label-barchart widget')
       .attr('x', (d, i) => vis.config.margin.left + i * (size + 42))
       .attr('y', vis.config.margin.bottom + 20 + size * 1.8)
-      .text(d => d)
+      .text((d) => d)
       .attr('text-anchor', 'middle')
       .style('alignment-baseline', 'middle')
       .style('font-size', '12px');
