@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable prefer-arrow-callback */
 /* eslint-disable prefer-destructuring */
 class PieChart {
   // Class constructor with initial configuration
@@ -93,5 +95,49 @@ class PieChart {
       .style('text-anchor', 'middle')
       .style('font-size', 14)
       .style('fill', 'white');
+
+    // Add tooltips
+    arcs.on('mouseover', (event, d) => {
+      const selectedPlatform = d.data[0];
+      const sampleMovies = [];
+      const dataCopy = structuredClone(vis.data);
+      dataCopy.sort(function (a, b) {
+        return a['Rotten Tomato Score'] > b['Rotten Tomato Score'] ? 1 : -1;
+      });
+      let numMovies = 0;
+      let i = 0;
+      while (numMovies < 5) {
+        if (dataCopy[i].platform === selectedPlatform) {
+          sampleMovies.push(vis.data[i]);
+          numMovies += 1;
+        }
+        i += 1;
+      }
+      d3.select('#pie-chart-tooltip')
+        .style('opacity', 1)
+        .html(`
+        <div class=${'pie-chart-list'}>
+          <b  class=${'pie-chart-list'}>${selectedPlatform}</b>
+        </div>
+        <div class=${'pie-chart-list'}>
+          <i  class=${'pie-chart-list'}>Top Rated Movies</i>
+        </div>
+        <ol class=${'pie-chart-list'}>
+          <li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${sampleMovies[0].Title}</b> 🍅 ${sampleMovies[0]['Rotten Tomato Score']}%</li>
+          <li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${sampleMovies[1].Title}</b> 🍅 ${sampleMovies[1]['Rotten Tomato Score']}%</li>
+          <li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${sampleMovies[2].Title}</b> 🍅 ${sampleMovies[2]['Rotten Tomato Score']}%</li>
+          <li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${sampleMovies[3].Title}</b> 🍅 ${sampleMovies[3]['Rotten Tomato Score']}%</li>
+          <li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${sampleMovies[4].Title}</b> 🍅 ${sampleMovies[4]['Rotten Tomato Score']}%</li>
+        </ol>
+      `);
+    })
+      .on('mousemove', (event) => {
+        d3.select('#pie-chart-tooltip')
+          .style('left', `${event.pageX + 20}px`)
+          .style('top', `${event.pageY + 20}px`);
+      })
+      .on('mouseleave', () => {
+        d3.select('#pie-chart-tooltip').style('opacity', 0);
+      });
   }
 }
