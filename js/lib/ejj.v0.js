@@ -77,6 +77,9 @@ function filterBySelected(filterVal, selected, dataObj) {
     selected.minYear = +filterVal[0];
     selected.maxYear = +filterVal[1];
   }
+  if (selected.platforms.length === 0) {
+    dataObj.allPlatforms.forEach((d) => selected.platforms.push(d));
+  }
 
   const filtered = dataObj.rawData.filter((d) => {
     let genreExists = false;
