@@ -31,7 +31,7 @@ d3.csv('data/preprocessedMovies2.csv')
 
     selected.genres = movieData.getAllGenres();
     selected.mpaa = Array.from(allMpaaSet);
-    selected.platforms = Array.from(allPlatformsSet);
+    // selected.platforms = Array.from(allPlatformsSet);
     selected.minYear = movieData.getYearMin();
     selected.maxYear = movieData.getYearMax();
 
@@ -92,6 +92,10 @@ function addListeners() {
       elt.classList.toggle('active');
 
       dataObj = { ...dataObj, data: filtered };
+
+      if (dataObj.data.length === 0) {
+        dataObj.data = dataObj.rawData;
+      }
 
       pieChart.data = dataObj.data;
       pieChart.updateVis();
