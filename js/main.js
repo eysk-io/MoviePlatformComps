@@ -31,7 +31,6 @@ d3.csv('data/preprocessedMovies2.csv')
 
     selected.genres = movieData.getAllGenres();
     selected.mpaa = Array.from(allMpaaSet);
-    // selected.platforms = Array.from(allPlatformsSet);
     selected.minYear = movieData.getYearMin();
     selected.maxYear = movieData.getYearMax();
 

@@ -1,5 +1,6 @@
 /* eslint-disable prefer-destructuring */
 class PieChart {
+  // Class constructor with initial configuration
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
@@ -18,7 +19,9 @@ class PieChart {
     this.initVis();
   }
 
+  // Initialize the svg container, scales, axes, and append static elements
   initVis() {
+    // Calculate inner chart size. Margin specifies the space around the actual chart.
     const vis = this;
     vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
@@ -30,6 +33,7 @@ class PieChart {
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
+    // Add title
     vis.title = vis.svg.append('g')
       .append('text')
       .attr('class', 'chart-header')
@@ -54,6 +58,7 @@ class PieChart {
       'Prime Video': 'amazon',
       'Disney+': 'disney',
     };
+    // Get count of movies for each platform
     vis.platformMovieCount = d3.rollups(this.data, (v) => v.length, (d) => d.platform);
     vis.platformMovieCountJSON = {};
     vis.platformMovieCount.forEach((element) => {
@@ -63,6 +68,7 @@ class PieChart {
     const chart = vis.svg.append('g')
       .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
 
+    // Create pie chart
     const pie = d3.pie()
       .value((d) => d[1]);
     const pieData = pie(Object.entries(vis.platformMovieCountJSON));
@@ -71,12 +77,14 @@ class PieChart {
       .innerRadius(0)
       .outerRadius(100);
 
+    // Add pie chart slices
     const arcs = chart.selectAll('path')
       .data(pieData)
       .join('path')
       .attr('fill', (d, i) => vis.config.colors.platformColors[vis.platformMap[d.data[0]]])
       .attr('d', arcGenerator);
 
+    // At labels to each slice of the pie chart
     const labels = chart.selectAll('text')
       .data(pieData)
       .join('text')
