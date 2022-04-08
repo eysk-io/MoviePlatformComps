@@ -34,7 +34,7 @@ class GridChart {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    vis.bands = vis.setScoreBands();
+    vis.bands = vis.setScoreBands(vis.data);
     vis.xAxisVals = new Array(3);
     vis.bands.forEach((s, i) => {
       vis.xAxisVals[i] = s.scoreBand.toUpperCase();

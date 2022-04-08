@@ -1,13 +1,3 @@
-function getAllGenres(data) {
-  const allGenres = new Set();
-
-  data.forEach((d) => {
-    allGenres.add(d.genre);
-  });
-
-  return allGenres;
-}
-
 function getAllMpaa(data) {
   const allMpaa = new Set();
 
@@ -83,6 +73,9 @@ function filterBySelected(filterVal, selected, dataObj) {
     } else {
       selected.platforms.push(filterVal);
     }
+  } else if (typeof filterVal === 'object' && filterVal.length === 2) {
+    selected.minYear = +filterVal[0];
+    selected.maxYear = +filterVal[1];
   }
 
   const filtered = dataObj.rawData.filter((d) => {
@@ -107,14 +100,15 @@ function filterBySelected(filterVal, selected, dataObj) {
       }
     });
 
-    return genreExists && mpaaExists && platformExists;
+    const isInRange = +d.Year >= selected.minYear && +d.Year <= selected.maxYear;
+
+    return genreExists && mpaaExists && platformExists && isInRange;
   });
 
   return filtered;
 }
 
 const ejj = {
-  getAllGenres,
   getAllMpaa,
   getAllPlatforms,
   removeChildren,
