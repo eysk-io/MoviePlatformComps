@@ -88,13 +88,13 @@ td {
 }  
 
 .pie-legend-btn.active {
-  opacity: 1;
-  font-size: 13px;
+  color: black;
+  font-size: 13.5px;
 }
 
 .pie-legend-btn {
-  opacity: 0.5;
-  font-size: 13px;
+  color: grey;
+  font-size: 13.5px;
 }
 
 #netflix {
