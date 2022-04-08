@@ -1,13 +1,3 @@
-function getAllGenres(data) {
-  const allGenres = new Set();
-
-  data.forEach((d) => {
-    allGenres.add(d.genre);
-  });
-
-  return allGenres;
-}
-
 function getAllMpaa(data) {
   const allMpaa = new Set();
 
@@ -119,7 +109,6 @@ function filterBySelected(filterVal, selected, dataObj) {
 }
 
 const ejj = {
-  getAllGenres,
   getAllMpaa,
   getAllPlatforms,
   removeChildren,

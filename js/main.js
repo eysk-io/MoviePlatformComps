@@ -26,11 +26,10 @@ d3.csv('data/preprocessedMovies2.csv')
   .then((rawData) => {
     const movieData = new MovieData(rawData);
 
-    const allGenreSet = ejjLib.getAllGenres(rawData);
     const allMpaaSet = ejjLib.getAllMpaa(rawData);
     const allPlatformsSet = ejjLib.getAllPlatforms(rawData);
 
-    selected.genres = Array.from(allGenreSet);
+    selected.genres = movieData.getAllGenres();
     selected.mpaa = Array.from(allMpaaSet);
     selected.platforms = Array.from(allPlatformsSet);
     selected.minYear = movieData.getYearMin();
@@ -39,7 +38,7 @@ d3.csv('data/preprocessedMovies2.csv')
     dataObj = {
       rawData,
       data: rawData,
-      allGenres: allGenreSet,
+      allGenres: movieData.getAllGenresSet(),
       allMpaa: allMpaaSet,
       allPlatforms: allPlatformsSet,
     };
