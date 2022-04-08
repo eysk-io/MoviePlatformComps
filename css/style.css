@@ -67,11 +67,11 @@ svg {
 }
 
 .square {
-  border-style: solid;
-  border-color: black;
   display: inline-block;
-  height: 13px;
-  width: 13px;
+  height: 16px;
+  width: 16px;
+  text-indent: 20px;
+  margin: 4px 4px 4px 4px;
 }
 
 ul {
@@ -89,10 +89,12 @@ td {
 
 .pie-legend-btn.active {
   opacity: 1;
+  font-size: 13px;
 }
 
 .pie-legend-btn {
   opacity: 0.5;
+  font-size: 13px;
 }
 
 #netflix {

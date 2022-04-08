@@ -3,7 +3,7 @@ class PieChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 300,
+      containerWidth: _config.containerWidth || 290,
       containerHeight: _config.containerHeight || 300,
       margin: _config.margin || {
         top: 20, right: 20, bottom: 20, left: 60,
