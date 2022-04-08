@@ -88,12 +88,12 @@ td {
 }  
 
 .pie-legend-btn.active {
-  color: black;
+  color: grey;
   font-size: 13.5px;
 }
 
 .pie-legend-btn {
-  color: grey;
+  color: black;
   font-size: 13.5px;
 }
 
