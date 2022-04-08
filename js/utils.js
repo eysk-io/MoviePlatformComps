@@ -149,25 +149,30 @@ function getAllPlatforms(data) {
   return [...platforms];
 }
 
-function setScoreBands() {
+function setScoreBands(data) {
   const numGrids = 3;
   const result = new Array(numGrids);
-  const minScore = 0;
-  const maxScore = 100;
+  let minScore = Number.MAX_SAFE_INTEGER;
+  let maxScore = Number.MIN_SAFE_INTEGER;
+
+  data.forEach((d) => {
+    minScore = Math.min(minScore, +d['Rotten Tomato Score']);
+    maxScore = Math.max(maxScore, +d['Rotten Tomato Score']);
+  });
+  const scoreIncrement = (maxScore - minScore) / numGrids;
 
   for (let i = 0; i < numGrids; i += 1) {
-    const currScore = (i + 1) * (maxScore / numGrids);
     let currMin;
     let currMax;
     let currBand;
 
     if (i === 0) {
       currMin = minScore;
-      currMax = Math.round(currScore);
+      currMax = Math.round(currMin + scoreIncrement);
       currBand = 'low';
     } else if (i === 1) {
       currMin = result[i - 1].maxScore + 1;
-      currMax = Math.round(currScore);
+      currMax = Math.round(currMin + scoreIncrement);
       currBand = 'med';
     } else {
       currMin = result[i - 1].maxScore + 1;
