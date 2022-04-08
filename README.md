@@ -11,7 +11,9 @@ Johnny Li, t3e2b
 <br>
 References
 <br>
-Adapted starter code from Johnny Li's Programming 2
+Adapted starter code from Johnny Li's Programming 2 assignment
+<br>
+Adapted tooltips code from Johnny Li's Programming 2 assignment
 <br>
 Adapted grouped bar chart
 <br>
