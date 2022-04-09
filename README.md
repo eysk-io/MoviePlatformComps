@@ -30,3 +30,7 @@ https://www.d3-graph-gallery.com/graph/custom_legend.html
 <br>
 Colour site to get a set of colours that have been improved for colour deficient
 https://medialab.github.io/iwanthue/
+<br>
+Adapted transitions
+<br>
+https://github.com/d3/d3-transition
