@@ -31,7 +31,9 @@ class PieChart {
       .attr('width', vis.config.containerWidth)
       .attr('height', vis.config.containerHeight);
 
-    // Add title
+    vis.chart = vis.svg.append('g')
+      .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
+
     vis.title = vis.svg.append('g')
       .append('text')
       .attr('class', 'chart-header')
@@ -64,10 +66,6 @@ class PieChart {
       vis.platformMovieCountJSON[currElt] = nextElt;
     });
 
-    const chart = vis.svg.append('g')
-      .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
-
-    // Create pie chart
     const pie = d3.pie()
       .value((d) => d[1]);
     const pieData = pie(Object.entries(vis.platformMovieCountJSON));
@@ -76,15 +74,13 @@ class PieChart {
       .innerRadius(0)
       .outerRadius(100);
 
-    // Add pie chart slices
-    const arcs = chart.selectAll('path')
+    const arcs = vis.chart.selectAll('path')
       .data(pieData)
       .join('path')
       .attr('fill', (d) => vis.config.colors[vis.platformMap[d.data[0]]])
       .attr('d', arcGenerator);
 
-    // At labels to each slice of the pie chart
-    const labels = chart.selectAll('text')
+    const labels = vis.chart.selectAll('text')
       .data(pieData)
       .join('text')
       .text((d) => d.data[1])
