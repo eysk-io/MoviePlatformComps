@@ -106,6 +106,7 @@ class PieChart {
       }
       d3.select('#pie-chart-tooltip')
         .style('opacity', 1)
+        .style('z-index', 5)
         .html(`
         <div class=${'pie-chart-list'}>
           <b  class=${'pie-chart-list'}>${selectedPlatform}</b>
@@ -128,7 +129,9 @@ class PieChart {
           .style('top', `${event.pageY + 20}px`);
       })
       .on('mouseleave', () => {
-        d3.select('#pie-chart-tooltip').style('opacity', 0);
+        d3.select('#pie-chart-tooltip')
+          .style('opacity', 0)
+          .style('z-index', -5);
       });
   }
 }
