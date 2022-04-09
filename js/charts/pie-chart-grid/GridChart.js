@@ -261,7 +261,7 @@ class GridChart {
       minScore = Math.min(minScore, +d['Rotten Tomato Score']);
       maxScore = Math.max(maxScore, +d['Rotten Tomato Score']);
     });
-    const scoreIncrement = (maxScore - minScore) / numGrids;
+    const scoreIncrement = (maxScore - minScore) / numGrids - 1;
 
     for (let i = 0; i < numGrids; i += 1) {
       let currMin;
