@@ -7,20 +7,18 @@ class PieTip {
 
   generateChart() {
     this._elt.on('mouseover', (_e, d) => {
+      // Select top rated movies
       const selectedPlatform = d.data[0];
       const sampleMovies = [];
-      const dataCopy = structuredClone(this._data);
-      dataCopy.sort((a, b) => (a['Rotten Tomato Score'] > b['Rotten Tomato Score'] ? 1 : -1));
-      let numMovies = 0;
-      let idx = 0;
-      while (numMovies < 5) {
-        if (dataCopy[idx].platform === selectedPlatform) {
-          sampleMovies.push(this._data[idx]);
-          numMovies += 1;
-        }
-        idx += 1;
+      let filteredData = this._data;
+      filteredData = this._data.filter((item) => item.platform === selectedPlatform);
+      filteredData.sort((a, b) => (a['Rotten Tomato Score'] < b['Rotten Tomato Score'] ? 1 : -1));
+      let i = 0;
+      while (i < filteredData.length && i < 5) {
+        sampleMovies.push(filteredData[i]);
+        i += 1;
       }
-
+      // Create tooltip with top rated movies
       let listItems = '';
       sampleMovies.forEach((m) => {
         listItems += `<li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${m.Title}</b> 🍅 ${m['Rotten Tomato Score']}%</li>`;
