@@ -7,7 +7,6 @@ class GridChart {
       width: _config.width - _config.margin.left - _config.margin.right,
       platformColors: _config.platformColors,
       allPlatforms: _config.platforms,
-      utils: _config.functions,
     };
 
     this.data = _data;
@@ -90,6 +89,41 @@ class GridChart {
       .attr('y', -25)
       .text(('Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score'));
 
+    vis.aggregatedData = vis._aggregateData();
+    vis.aggregatedData = vis._setGridPos();
+
+    const pieChartGroups = vis.chart.selectAll()
+      .data(vis.aggregatedData)
+      .join('g')
+      .attr('id', (_, i) => `grid-chart-pie-chart-${i}`);
+
+    vis.chart.selectAll()
+      .data(vis.aggregatedData, (d) => `${d.group}:${d.variable}`)
+      .join('rect')
+      .attr('x', (d) => vis.xScale(d.group))
+      .attr('y', (d) => vis.yScale(d.variable))
+      .attr('width', vis.xScale.bandwidth())
+      .attr('height', vis.yScale.bandwidth())
+      .style('stroke', 'black')
+      .style('stroke-width', 2.5)
+      .style('fill', 'none')
+      .attr('class', 'grid-box');
+
+    vis.multiViewPieCharts = [];
+
+    // eslint-disable-next-line no-underscore-dangle
+    [vis.pieChartGroups] = pieChartGroups._groups;
+    vis.pieChartGroups.forEach((g, i) => {
+      const currVal = vis.aggregatedData[i].value.total;
+      const multiViewPieChart = new MultiViewPieChart({
+        parentElement: `#${g.id}`,
+        width: Math.sqrt(currVal * 50),
+        height: Math.sqrt(currVal * 50),
+        platformColors: vis.config.platformColors,
+      }, vis.aggregatedData[i]);
+      vis.multiViewPieCharts.push(multiViewPieChart);
+    });
+
     vis.updateVis();
   }
 
@@ -103,37 +137,14 @@ class GridChart {
 
   renderVis() {
     const vis = this;
-    const pieChartGroups = vis.chart.selectAll()
-      .data(vis.aggregatedData)
-      .enter()
-      .append('g')
-      .attr('id', (_, i) => `grid-chart-pie-chart-${i}`);
 
-    // eslint-disable-next-line no-underscore-dangle
-    [vis.pieChartGroups] = pieChartGroups._groups;
-    vis.pieChartGroups.forEach((g, i) => {
+    vis.pieChartGroups.forEach((_g, i) => {
       const currVal = vis.aggregatedData[i].value.total;
-      const multiViewPieChart = new MultiViewPieChart({
-        parentElement: `#${g.id}`,
-        width: Math.sqrt(currVal * 50),
-        height: Math.sqrt(currVal * 50),
-        platformColors: vis.config.platformColors,
-        utils: vis.config.utils,
-      }, vis.aggregatedData[i]);
-      multiViewPieChart.updateVis();
+      vis.multiViewPieCharts[i].config.width = Math.sqrt(currVal * 50);
+      vis.multiViewPieCharts[i].config.height = Math.sqrt(currVal * 50);
+      vis.multiViewPieCharts[i].data = vis.aggregatedData[i];
+      vis.multiViewPieCharts[i].updateVis();
     });
-
-    vis.chart.selectAll()
-      .data(vis.aggregatedData, (d) => `${d.group}:${d.variable}`)
-      .join('rect')
-      .attr('x', (d) => vis.xScale(d.group))
-      .attr('y', (d) => vis.yScale(d.variable))
-      .attr('width', vis.xScale.bandwidth())
-      .attr('height', vis.yScale.bandwidth())
-      .style('stroke', 'black')
-      .style('stroke-width', 2.5)
-      .style('fill', 'none')
-      .attr('class', 'grid-box');
   }
 
   _aggregateData() {

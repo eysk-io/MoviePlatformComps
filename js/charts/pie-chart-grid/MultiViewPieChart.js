@@ -5,7 +5,6 @@ class MultiViewPieChart {
       width: _config.width,
       height: _config.height,
       platformColors: _config.platformColors,
-      utils: _config.utils,
       xPos: _data.xPos,
       yPos: _data.yPos,
     };
@@ -16,8 +15,14 @@ class MultiViewPieChart {
 
   initVis() {
     const vis = this;
-
-    const { platformColors } = vis.config;
+    const {
+      platformColors,
+      width,
+      height,
+      parentElement,
+      xPos,
+      yPos,
+    } = vis.config;
     this.colorsList = new Array(platformColors.length);
 
     const { value } = vis.data;
@@ -25,9 +30,12 @@ class MultiViewPieChart {
     vis.allCounts = new Array(numValues - 1);
     vis.platforms = new Array(numValues - 1);
 
-    vis.radius = 0;
+    vis.svg = d3.select(parentElement)
+      .attr('width', width)
+      .attr('height', height);
 
-    vis.updateVis();
+    vis.chart = vis.svg.append('g')
+      .attr('transform', `translate(${xPos}, ${yPos})`);
   }
 
   updateVis() {
@@ -37,7 +45,7 @@ class MultiViewPieChart {
 
     vis.radius = Math.max(
       Math.min(width, height) / 2,
-      50,
+      10,
     );
 
     vis.platforms = Object.getOwnPropertyNames(data.value);
@@ -61,44 +69,21 @@ class MultiViewPieChart {
   renderVis() {
     const vis = this;
     const {
-      platforms,
       colorsList,
-      config,
       allCounts,
       radius,
     } = vis;
-    const {
-      width,
-      height,
-      parentElement,
-      xPos,
-      yPos,
-    } = config;
-
-    vis.colorScale = d3.scaleOrdinal()
-      .domain(platforms)
-      .range(colorsList);
-
-    vis.svg = d3.select(parentElement)
-      .attr('width', width)
-      .attr('height', height);
 
     const pie = d3.pie();
 
-    const arc = d3.arc()
+    vis.chart.arc = d3.arc()
       .innerRadius(0)
       .outerRadius(radius);
 
-    const chart = vis.svg.append('g')
-      .attr('transform', `translate(${xPos}, ${yPos})`);
-
-    const arcs = chart.selectAll('arc')
+    vis.chart.selectAll('path')
       .data(pie(allCounts))
-      .enter()
-      .append('g');
-
-    arcs.append('path')
+      .join('path')
       .attr('fill', (_d, i) => colorsList[i])
-      .attr('d', arc);
+      .attr('d', vis.chart.arc);
   }
 }
