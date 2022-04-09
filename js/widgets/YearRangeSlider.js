@@ -1,19 +1,20 @@
 // adapted from https://codepen.io/rendykstan/pen/VLqZGO
-class YearRangeSlider {
+class YearRangeSlider extends Widget {
   constructor(inputNode, yearRange) {
+    super();
     this._sliderElts = document.getElementsByClassName(inputNode);
     this._yearRange = yearRange;
     this._getVals = window.getVals;
   }
 
-  generateSlider() {
+  generate() {
     const { min, max } = this._yearRange;
 
     const minRangeHtml = `<input class="range-input" value=${min} min=${min} max=${max} step="1" type="range">`;
     const maxRangeHtml = `<input class="range-input" value=${max} min=${min} max=${max} step="1" type="range">`;
 
     const sliderSections = document.getElementsByClassName('range-slider');
-    const frags = [createFrag(minRangeHtml), createFrag(maxRangeHtml)];
+    const frags = [this._createFrag(minRangeHtml), this._createFrag(maxRangeHtml)];
     frags.forEach((f) => {
       sliderSections[0].appendChild(f);
     });

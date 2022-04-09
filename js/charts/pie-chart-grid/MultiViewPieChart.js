@@ -4,7 +4,7 @@ class MultiViewPieChart {
       parentElement: _config.parentElement,
       width: _config.width,
       height: _config.height,
-      colors: _config.colors,
+      platformColors: _config.platformColors,
       utils: _config.utils,
       xPos: _data.xPos,
       yPos: _data.yPos,
@@ -17,8 +17,8 @@ class MultiViewPieChart {
   initVis() {
     const vis = this;
 
-    const { colors } = vis.config;
-    this.colorsList = new Array(colors.length);
+    const { platformColors } = vis.config;
+    this.colorsList = new Array(platformColors.length);
 
     const { value } = vis.data;
     const numValues = Object.keys(value).length;
@@ -33,7 +33,7 @@ class MultiViewPieChart {
   updateVis() {
     const vis = this;
     const { config, data } = vis;
-    const { width, height, colors } = config;
+    const { width, height, platformColors } = config;
 
     vis.radius = Math.max(
       Math.min(width, height) / 2,
@@ -42,9 +42,9 @@ class MultiViewPieChart {
 
     vis.platforms = Object.getOwnPropertyNames(data.value);
     vis.platforms.shift();
-    const colorsProps = Object.getOwnPropertyNames(colors.platformColors);
+    const colorsProps = Object.getOwnPropertyNames(platformColors);
     colorsProps.forEach((p, i) => {
-      vis.colorsList[i] = colors.platformColors[p];
+      vis.colorsList[i] = platformColors[p];
     });
 
     let idx = 0;

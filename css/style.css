@@ -66,50 +66,39 @@ svg {
   color:  black;
 }
 
-.square {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  text-indent: 20px;
-  margin: 4px 4px 4px 4px;
+.pie-chart-container {
+  display: flex;
 }
 
-ul {
-  list-style-type: none;
-}
-
-table {
-  width: 30%
-}
-
-td {
-  width: 100%;
-  white-space: nowrap;
-}  
-
-.pie-legend-btn.active {
-  color: grey;
-  font-size: 13.5px;
+#pie-chart-legend {
+  width: 100px;
+  margin-top: 10%;
 }
 
 .pie-legend-btn {
-  color: black;
+  color: grey;
   font-size: 13.5px;
+  height: 25px;
+  margin: 5%;
 }
 
-#netflix {
+.pie-legend-btn.active {
+  color: black;
+}
+
+#Netflix {
   background-color: #485908;
 }
 
-#hulu {
+#Hulu {
   background-color: #ae35bb;
 }
 
-#amazon {
+#Prime {
   background-color: #e4c44c;
 }
 
-#disney {
+#Disney {
   background-color: #007ae6;
 }
 
@@ -132,10 +121,8 @@ td {
 .pie-chart-list {
   background-color: white;
   font-size: 13px;
-  /* font-weight: bold; */
 }
 
 .pie-bold {
   font-weight: bold;
 }
-

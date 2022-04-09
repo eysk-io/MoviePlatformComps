@@ -1,132 +1,114 @@
-/* eslint-disable func-names */
-const utils = functions;
-const ejjLib = ejj;
-
-let dataObj;
-
-let pieChart;
-let barChart;
-let gridChart;
-
-const selected = {
-  genres: [],
-  mpaa: [],
-  platforms: [],
-  minYear: -1,
-  maxYear: -1,
-};
-
 d3.csv('data/preprocessedMovies2.csv')
   .then((data) => {
-    let rawData = utils.collapseCategories(data);
-    rawData = utils.groupByPlatform(rawData);
+    const movieData = new MovieData(data);
+    const filterHandler = new FilterHandler(movieData, 'none');
+    const config = new Config({
+      platformColors: {
+        Netflix: '#485908',
+        Hulu: '#ae35bb',
+        Prime: '#e4c44c',
+        Disney: '#007ae6',
+      },
+      barColors: [
+        '#5c252b',
+        '#aacf22',
+        '#ff92dd',
+        '#3b44c7',
+        '#02a1f2',
+        '#bf0073',
+        '#fab888',
+        '#93cdf7',
+        '#ff9a3d',
+      ],
+    });
 
-    return rawData;
-  })
-  .then((rawData) => {
-    const movieData = new MovieData(rawData);
+    new PlatformLegend('pie-chart-legend', movieData.getAllPlatforms())
+      .generate();
 
-    const allMpaaSet = ejjLib.getAllMpaa(rawData);
-    const allPlatformsSet = ejjLib.getAllPlatforms(rawData);
+    new MpaaButtons('mpa-rating-button-container', movieData.getAllMpaa())
+      .generate();
 
-    selected.genres = movieData.getAllGenres();
-    selected.mpaa = Array.from(allMpaaSet);
-    selected.platforms = Array.from(allPlatformsSet);
-    selected.minYear = movieData.getYearMin();
-    selected.maxYear = movieData.getYearMax();
+    new YearRangeSlider('range-input', movieData.getYearRange())
+      .generate();
 
-    dataObj = {
-      rawData,
-      data: rawData,
-      allGenres: movieData.getAllGenresSet(),
-      allMpaa: allMpaaSet,
-      allPlatforms: allPlatformsSet,
-    };
-
-    ejjLib.generateMpaRatingWidgets(dataObj.rawData);
-    renderCharts();
-
-    new YearRangeSlider('range-input', movieData.getYearRange()).generateSlider();
+    renderCharts(movieData, filterHandler, config);
   });
 
-function renderCharts() {
-  gridChart = new GridChart({
-    parentElement: '#grid-chart',
-    margin: {
-      top: 90,
-      bottom: 90,
-      left: 90,
-      right: 90,
-    },
-    width: 900,
-    height: 900,
-    colors: config.colors,
-    functions,
-  }, dataObj.data);
+function renderCharts(movieData, filterHandler, config) {
+  const data = movieData.getProcessedData();
 
-  pieChart = new PieChart({
-    parentElement: '#pie-chart',
-    colors: config.colors,
-    platforms: dataObj.allPlatforms,
-    functions,
-  }, dataObj.data);
+  const charts = [
+    new GridChart({
+      parentElement: '#grid-chart',
+      margin: {
+        top: 90,
+        bottom: 90,
+        left: 90,
+        right: 90,
+      },
+      width: 900,
+      height: 900,
+      platformColors: config.getPlatformColors(),
+      platforms: movieData.getAllPlatforms(),
+    }, data),
 
-  barChart = new BarChart({
-    parentElement: '#bar-chart',
-    colors: config.colors,
-    genres: config.colors.allGenres,
-    platforms: config.colors.allPlatforms,
-    functions,
-  }, dataObj.data);
+    new PieChart({
+      parentElement: '#pie-chart',
+      platformColors: config.getPlatformColors(),
+      platforms: movieData.getAllPlatforms(),
+    }, data),
 
-  addListeners(dataObj);
+    new BarChart({
+      parentElement: '#bar-chart',
+      barColors: config.getBarColors(),
+      genres: movieData.getAllGenres(),
+      platforms: movieData.getAllPlatforms(),
+    }, data),
+  ];
+
+  addListeners(movieData, filterHandler, charts);
 }
 
-function addListeners() {
+function updateChartsByFilteredData(filteredData, charts) {
+  charts.forEach((c) => {
+    c.data = filteredData.getFilteredData();
+    c.updateVis();
+  });
+}
+
+function addListeners(movieData, filterHandler, charts) {
+  const filteredData = new FilteredData(movieData.getRawData());
+
   const widgets = document.querySelectorAll('.widget');
   widgets.forEach((elt) => {
     elt.addEventListener('click', (e) => {
-      const filterVal = e.target.innerHTML;
-      const filtered = ejjLib.filterBySelected(filterVal, selected, dataObj);
-
       elt.classList.toggle('active');
 
-      dataObj = { ...dataObj, data: filtered };
+      const filterVal = e.target.innerHTML;
+      filterHandler.setMovieData(filteredData);
+      filterHandler.setFilterVal(filterVal);
+      const filtered = filterHandler.filterBySelected();
+      filteredData.setFilteredData(filtered);
 
-      pieChart.data = dataObj.data;
-      pieChart.updateVis();
-
-      barChart.data = dataObj.data;
-      barChart.updateVis();
-
-      gridChart.data = dataObj.data;
-      gridChart.updateVis();
+      updateChartsByFilteredData(filteredData, charts);
     });
   });
-}
 
-function applyYearRanges() {
-  const rangeValueElts = document.getElementsByClassName('rangeValues');
-  rangeValueElts[0].dispatchEvent(new Event('change'));
+  const slider = document.querySelector('.range-slider');
+  slider.addEventListener('change', () => {
+    const rangeValueElts = document.getElementsByClassName('rangeValues');
+    const rangeValueStr = rangeValueElts[0].innerHTML;
+    const minYear = rangeValueStr.substring(15, 20);
+    const maxYear = rangeValueStr.substring(22);
+    const filterVal = [minYear, maxYear];
 
-  const rangeValueStr = rangeValueElts[0].innerHTML;
+    filterHandler.setMovieData(filteredData);
+    filterHandler.setFilterVal(filterVal);
+    const filtered = filterHandler.filterBySelected();
+    filteredData.setFilteredData(filtered);
 
-  const minYear = rangeValueStr.substring(15, 20);
-  const maxYear = rangeValueStr.substring(22);
-
-  const filtered = ejjLib.filterBySelected([minYear, maxYear], selected, dataObj);
-  dataObj = { ...dataObj, data: filtered };
-  if (dataObj.data.length === 0) {
-    dataObj.data = dataObj.rawData;
-  }
-  pieChart.data = dataObj.data;
-  pieChart.updateVis();
-
-  barChart.data = dataObj.data;
-  barChart.updateVis();
-
-  gridChart.data = dataObj.data;
-  gridChart.updateVis();
+    updateChartsByFilteredData(filteredData, charts);
+  });
 }
 
 // adapted from https://codepen.io/rendykstan/pen/VLqZGO

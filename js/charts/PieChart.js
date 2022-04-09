@@ -1,6 +1,3 @@
-/* eslint-disable func-names */
-/* eslint-disable prefer-arrow-callback */
-/* eslint-disable prefer-destructuring */
 class PieChart {
   // Class constructor with initial configuration
   constructor(_config, _data) {
@@ -11,11 +8,11 @@ class PieChart {
       margin: _config.margin || {
         top: 20, right: 20, bottom: 20, left: 60,
       },
-      colors: _config.colors,
+      colors: _config.platformColors,
+      platforms: _config.platforms,
       utils: _config.functions,
     };
-    this.colorsList = new Array(_config.colors.length);
-    this.getAllPlatforms = _config.functions.getAllPlatforms;
+    this.colorsList = new Array(_config.platformColors.length);
 
     this.data = _data;
     this.initVis();
@@ -29,7 +26,6 @@ class PieChart {
     vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
 
     vis.radius = Math.min(vis.width, vis.height) / (2 - vis.config.margin.top);
-    vis.platforms = vis.getAllPlatforms(vis.data);
 
     vis.svg = d3.select(vis.config.parentElement)
       .attr('width', vis.config.containerWidth)
@@ -55,16 +51,17 @@ class PieChart {
   renderVis() {
     const vis = this;
     vis.platformMap = {
-      Netflix: 'netflix',
-      Hulu: 'hulu',
-      'Prime Video': 'amazon',
-      'Disney+': 'disney',
+      Netflix: 'Netflix',
+      Hulu: 'Hulu',
+      'Prime Video': 'Prime',
+      'Disney+': 'Disney',
     };
     // Get count of movies for each platform
     vis.platformMovieCount = d3.rollups(this.data, (v) => v.length, (d) => d.platform);
     vis.platformMovieCountJSON = {};
     vis.platformMovieCount.forEach((element) => {
-      vis.platformMovieCountJSON[element[0]] = element[1];
+      const [currElt, nextElt, ...rest] = element;
+      vis.platformMovieCountJSON[currElt] = nextElt;
     });
 
     const chart = vis.svg.append('g')
@@ -83,7 +80,7 @@ class PieChart {
     const arcs = chart.selectAll('path')
       .data(pieData)
       .join('path')
-      .attr('fill', (d, i) => vis.config.colors.platformColors[vis.platformMap[d.data[0]]])
+      .attr('fill', (d) => vis.config.colors[vis.platformMap[d.data[0]]])
       .attr('d', arcGenerator);
 
     // At labels to each slice of the pie chart
@@ -101,9 +98,7 @@ class PieChart {
       const selectedPlatform = d.data[0];
       const sampleMovies = [];
       const dataCopy = structuredClone(vis.data);
-      dataCopy.sort(function (a, b) {
-        return a['Rotten Tomato Score'] > b['Rotten Tomato Score'] ? 1 : -1;
-      });
+      dataCopy.sort((a, b) => (a['Rotten Tomato Score'] > b['Rotten Tomato Score'] ? 1 : -1));
       let numMovies = 0;
       let i = 0;
       while (numMovies < 5) {
