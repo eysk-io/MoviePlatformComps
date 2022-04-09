@@ -66,6 +66,10 @@ class PieChart {
       vis.platformMovieCountJSON[currElt] = nextElt;
     });
 
+    const t = d3.transition()
+      .duration(300)
+      .ease(d3.easeLinear);
+
     const pie = d3.pie()
       .value((d) => d[1]);
     const pieData = pie(Object.entries(vis.platformMovieCountJSON));
@@ -83,6 +87,7 @@ class PieChart {
     const labels = vis.chart.selectAll('text')
       .data(pieData)
       .join('text')
+      .transition(t)
       .text((d) => d.data[1])
       .attr('transform', (d) => `translate(${arcGenerator.centroid(d)})`)
       .style('text-anchor', 'middle')
