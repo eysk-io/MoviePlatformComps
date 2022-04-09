@@ -70,6 +70,10 @@ class FilterHandler {
       selected.maxYear = +filterVal[1];
     }
 
+    if (selected.platforms.length === 0) {
+      allPlatforms.forEach((d) => selected.platforms.push(d));
+    }
+
     const filtered = data.filter((d) => {
       let genreExists = false;
       selected.genres.forEach((s) => {
