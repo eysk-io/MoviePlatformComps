@@ -85,5 +85,8 @@ class MultiViewPieChart {
       .join('path')
       .attr('fill', (_d, i) => colorsList[i])
       .attr('d', vis.chart.arc);
+
+    new MultiViewPieTip('#multi-view-pie-chart-tooltip', vis.chart, allCounts)
+      .generateChart();
   }
 }
