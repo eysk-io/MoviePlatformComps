@@ -30,14 +30,7 @@
                     The Grid Chart to the left <span><strong><i>(Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score)</i></strong></span> is divided into 3x3 bands.<br><br>
 
                     The size of each pie chart is an indicator of the total number of movies in each grid. A larger pie chart represents a greater number of movies. If there is nothing in a grid, there are not any movies that fit within these measurements.<br><br>
-    
-                    <span><b>Segmented Financial Performance (Y-Axis):</b></span><br><br>
-                    "Financial Performance" is calculated by taking the <span><strong><i>log base e</i></strong></span> of each movie's Gross Revenue/Cost.<br><br>
-                    Each row of the y-axis (LOW, MED, HIGH) contains an equal range of Financial Performance, which is dynamically generated based on the selected data.<br><br>
 
-                    <span><b>Segmented Rotten Tomatoes Score (X-Axis):</b></span><br><br>
-                    Each column of the x-axis (LOW, MED, HIGH) contains an equal range of Rotten Tomatoes Score, which is statically set at [0, 100].<br><br>
-                    
                     Each grid contains a pie chart showing the proportion of movies by platform for the intersection of the appropriate Financial Performance and Rotten Tomatoes Score.<br><br> 
                 </p>
                 <div class="pie-chart-container">
@@ -48,8 +41,7 @@
             </div>
         </div>
     </div>
-    <div id="pie-chart-tooltip"></div>
-    <div id="multi-view-pie-chart-tooltip"></div>
+    <div id="tooltip-container"></div>
     <script src="js/lib/d3.v6.min.js"></script>
     <script src="js/utils/Config.js"></script>
     <script src="js/widgets/Widget.js"></script>
@@ -59,8 +51,12 @@
     <script src="js/movie-data/MovieData.js"></script>
     <script src="js/movie-data/FilteredData.js"></script>
     <script src="js/utils/FilterHandler.js"></script>
+    <script src="js/tooltips/ToolTip.js"></script>
     <script src="js/tooltips/MultiViewPieTip.js"></script>
     <script src="js/tooltips/PieTip.js"></script>
+    <script src="js/tooltips/GridXAxisLabelTip.js"></script>
+    <script src="js/tooltips/GridYAxisLabelTip.js"></script>
+    <script src="js/tooltips/GridYAxisMarkTip.js"></script>
     <script src="js/charts/pie-chart-grid/MultiViewPieChart.js"></script>
     <script src="js/charts/pie-chart-grid/GridChart.js"></script>
     <script src="js/charts/PieChart.js"></script>

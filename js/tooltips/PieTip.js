@@ -1,51 +1,51 @@
-class PieTip {
-  constructor(id, elt, data) {
-    this._id = id;
-    this._elt = elt;
-    this._data = data;
+class PieTip extends ToolTip {
+  constructor(id, data, ...elts) {
+    super(id, data, elts);
   }
 
   generateChart() {
-    this._elt.on('mouseover', (_e, d) => {
-      // Select top rated movies
-      const selectedPlatform = d.data[0];
-      const sampleMovies = [];
-      let filteredData = this._data;
-      filteredData = this._data.filter((item) => item.platform === selectedPlatform);
-      filteredData.sort((a, b) => (a['Rotten Tomato Score'] < b['Rotten Tomato Score'] ? 1 : -1));
-      let i = 0;
-      while (i < filteredData.length && i < 5) {
-        sampleMovies.push(filteredData[i]);
-        i += 1;
-      }
-      // Create tooltip with top rated movies
-      let listItems = '';
-      sampleMovies.forEach((m) => {
-        listItems += `<li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${m.Title}</b> 🍅 ${m['Rotten Tomato Score']}%</li>`;
-      });
+    this._elts.forEach((elt) => {
+      elt.on('mouseover', (_e, d) => {
+        // Select top rated movies
+        const selectedPlatform = d.data[0];
+        const sampleMovies = [];
+        let filteredData = this._data;
+        filteredData = this._data.filter((item) => item.platform === selectedPlatform);
+        filteredData.sort((a, b) => (a['Rotten Tomato Score'] < b['Rotten Tomato Score'] ? 1 : -1));
+        let i = 0;
+        while (i < filteredData.length && i < 5) {
+          sampleMovies.push(filteredData[i]);
+          i += 1;
+        }
+        // Create tooltip with top rated movies
+        let listItems = '';
+        sampleMovies.forEach((m) => {
+          listItems += `<li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${m.Title}</b> 🍅 ${m['Rotten Tomato Score']}%</li>`;
+        });
 
-      d3.select(this._id)
-        .style('opacity', 1)
-        .style('z-index', 5)
-        .html(`
-        <div class=${'pie-chart-list'}>
-          <b  class=${'pie-chart-list'}>${selectedPlatform}</b>
-        </div>
-        <div class=${'pie-chart-list'}>
-          <i  class=${'pie-chart-list'}>Top Rated Movies</i>
-        </div>
-        <ol class=${'pie-chart-list'}>
-          ${listItems}
-        </ol>
-      `);
-    }).on('mousemove', (e) => {
-      d3.select(this._id)
-        .style('left', `${e.pageX + 20}px`)
-        .style('top', `${e.pageY + 20}px`);
-    }).on('mouseleave', () => {
-      d3.select(this._id)
-        .style('opacity', 0)
-        .style('z-index', -5);
+        d3.select(`#${this._id}`)
+          .style('opacity', 1)
+          .style('z-index', 5)
+          .html(`
+          <div class=${'pie-chart-list'}>
+            <b  class=${'pie-chart-list'}>${selectedPlatform}</b>
+          </div>
+          <div class=${'pie-chart-list'}>
+            <i  class=${'pie-chart-list'}>Top Rated Movies</i>
+          </div>
+          <ol class=${'pie-chart-list'}>
+            ${listItems}
+          </ol>
+        `);
+      }).on('mousemove', (e) => {
+        d3.select(`#${this._id}`)
+          .style('left', `${e.pageX + 20}px`)
+          .style('top', `${e.pageY + 20}px`);
+      }).on('mouseleave', () => {
+        d3.select(`#${this._id}`)
+          .style('opacity', 0)
+          .style('z-index', -5);
+      });
     });
   }
 }

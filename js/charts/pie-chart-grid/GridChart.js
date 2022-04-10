@@ -30,7 +30,7 @@ class GridChart {
     vis.bands = vis._setScoreBands();
     vis.xAxisVals = new Array(3);
     vis.bands.forEach((s, i) => {
-      vis.xAxisVals[i] = s.scoreBand.toUpperCase();
+      vis.xAxisVals[i] = s.scoreBand;
     });
 
     vis.bands = vis._setFinancialPerfBands();
@@ -51,28 +51,28 @@ class GridChart {
       .selectAll('text')
       .attr('class', 'grid-chart-mark-labels');
 
-    vis.chart.append('text')
+    vis.chart.xAxisLabel = vis.chart.append('text')
       .attr('class', 'grid-chart-label')
       .attr('text-anchor', 'end')
-      .attr('x', width - 235)
+      .attr('x', width - 195)
       .attr('y', height + 60)
-      .text('Segmented Rotten Tomatoes Score');
+      .text('Segmented Rotten Tomatoes Score (out of 100)');
 
     vis.yScale = d3.scaleBand()
       .range([height, 0])
       .domain(vis.yAxisVals);
 
-    vis.chart.append('g')
+    vis.chart.yAxisMarks = vis.chart.append('g')
       .call(d3.axisLeft(vis.yScale)
         .tickSize(0))
       .selectAll('text')
       .attr('class', 'grid-chart-mark-labels')
       .style('text-anchor', 'end')
-      .attr('dx', '1.7em')
+      .attr('dx', (d) => `${1.2 + (0.2 * d.length)}em`)
       .attr('dy', '-0.5em')
       .attr('transform', 'rotate(-90)');
 
-    vis.chart.append('text')
+    vis.chart.yAxisLabel = vis.chart.append('text')
       .attr('class', 'grid-chart-label')
       .attr('text-anchor', 'end')
       .attr('x', -230)
@@ -145,6 +145,17 @@ class GridChart {
       vis.multiViewPieCharts[i].data = vis.aggregatedData[i];
       vis.multiViewPieCharts[i].updateVis();
     });
+
+    new GridXAxisLabelTip('grid-chart-xaxis-label-tooltip', vis.bands, vis.chart.xAxisLabel)
+      .generateChart();
+
+    new GridYAxisLabelTip('grid-chart-yaxis-label-tooltip', vis.bands, vis.chart.yAxisLabel)
+      .generateChart();
+
+    vis.chart.yAxisMarks.each((_m, i) => {
+      new GridYAxisMarkTip(`grid-chart-yaxis-mark-tooltip-${i}`, vis.bands[i], d3.select(vis.chart.yAxisMarks._groups[0][i]))
+        .generateChart();
+    });
   }
 
   _aggregateData() {
@@ -207,7 +218,7 @@ class GridChart {
       for (let groupIdx = 0; groupIdx < varsByGroup[0].length; groupIdx += 1) {
         aggregatedData[aggregatedDataIdx] = {
           variable: bands[varIdx].perfBand.toUpperCase(),
-          group: bands[groupIdx].scoreBand.toUpperCase(),
+          group: bands[groupIdx].scoreBand,
           value: varsByGroup[varIdx][groupIdx],
         };
         aggregatedDataIdx += 1;
@@ -271,15 +282,15 @@ class GridChart {
       if (i === 0) {
         currMin = minScore;
         currMax = Math.round(currMin + scoreIncrement);
-        currBand = 'low';
+        currBand = `${currMin} to ${currMax}`;
       } else if (i === 1) {
         currMin = result[i - 1].maxScore + 1;
         currMax = Math.round(currMin + scoreIncrement);
-        currBand = 'med';
+        currBand = `${currMin} to ${currMax}`;
       } else {
         currMin = result[i - 1].maxScore + 1;
         currMax = maxScore;
-        currBand = 'high';
+        currBand = `${currMin} to ${currMax}`;
       }
 
       result[i] = {
@@ -328,15 +339,15 @@ class GridChart {
       if (i === 0) {
         currMin = prevPerf;
         currMax = currPerf;
-        currBand = 'low';
+        currBand = 'poor';
       } else if (i === 1) {
         currMin = prevPerf;
         currMax = currPerf;
-        currBand = 'med';
+        currBand = 'good';
       } else {
         currMin = prevPerf;
         currMax = maxPerf;
-        currBand = 'high';
+        currBand = 'exceptional';
       }
 
       const budgetObj = {

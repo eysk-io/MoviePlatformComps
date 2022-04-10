@@ -102,7 +102,7 @@ svg {
   background-color: #007ae6;
 }
 
-#pie-chart-tooltip {
+.tooltip {
   position: absolute;
   background: white;
   opacity: 0;
@@ -112,17 +112,6 @@ svg {
   font-weight: 100;
   padding: 3px 3px 3px 3px;
   z-index: -5;
-}
-
-#multi-view-pie-chart-tooltip {
-  position: absolute;
-  background: white;
-  opacity: 0;
-  box-shadow: 2px 2px 3px 0px rgb(92 92 92 / 0.5);
-  border: 1px solid #ddd;
-  font-size: 15px;
-  font-weight: 100;
-  padding: 3px 3px 3px 3px;
 }
 
 .pie-chart-tooltip-label {

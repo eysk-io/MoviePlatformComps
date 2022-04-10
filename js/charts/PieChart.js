@@ -95,7 +95,7 @@ class PieChart {
       .style('fill', 'white');
 
     // Add tooltips
-    new PieTip('#pie-chart-tooltip', arcs, vis.data)
+    new PieTip('pie-chart-tooltip', vis.data, arcs)
       .generateChart();
   }
 }
