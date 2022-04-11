@@ -2,7 +2,7 @@ class BarChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: 550,
+      containerWidth: 650,
       containerHeight: 300,
       margin: {
         top: 90, right: 10, bottom: 20, left: 60,
@@ -148,30 +148,33 @@ class BarChart {
   renderLegend() {
     const vis = this;
     const genres = vis.config.allGenres;
-
-    // Add one checkbox in the legend for each label
-    const size = 15;
-    vis.svg.selectAll('boxes')
-      .data(genres)
-      .join('rect')
-      .attr('class', 'checkbox-barchart')
-      .attr('x', (d, i) => vis.config.margin.left + i * (size + 41))
-      .attr('y', vis.config.margin.bottom + 20)
-      .attr('width', size)
-      .attr('height', size)
-      .style('fill', (d) => vis.colourScale(d));
+    const size = 20;
 
     // Add legend label
-    vis.svg.selectAll('labels')
+    vis.svg.selectAll('.labels')
       .data(genres)
       .join('text')
-      .attr('class', 'label-barchart widget')
+      .attr('class', (d) => `label ${d} barchart widget`)
+      .attr('data-category', (d) => `${d}`)
       .attr('x', (d, i) => vis.config.margin.left + i * (size + 42))
       .attr('y', vis.config.margin.bottom + 20 + size * 1.8)
       .text((d) => d)
       .attr('text-anchor', 'middle')
       .style('alignment-baseline', 'middle')
+      .style('font-weight', '700')
       .style('font-size', '12px');
+
+    // Add one checkbox in the legend for each label
+    vis.svg.selectAll('.box')
+      .data(genres)
+      .join('rect')
+      .attr('class', (d) => `box ${d} barchart widget`)
+      .attr('data-category', (d) => `${d}`)
+      .attr('x', (d, i) => vis.config.margin.left + i * (size + 41))
+      .attr('y', vis.config.margin.bottom + 20)
+      .attr('width', size)
+      .attr('height', size)
+      .style('fill', (d) => vis.colourScale(d));
   }
 
   /**
