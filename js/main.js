@@ -90,7 +90,7 @@ function addListeners(movieData, filterHandler, charts) {
     elt.addEventListener('click', (e) => {
       elt.classList.toggle('active');
 
-      const filterVal = e.target.innerHTML;
+      const filterVal = elt.getAttribute('data-category') || e.target.innerHTML;
       filterHandler.setMovieData(filteredData);
       filterHandler.setFilterVal(filterVal);
       const filtered = filterHandler.filterBySelected();
