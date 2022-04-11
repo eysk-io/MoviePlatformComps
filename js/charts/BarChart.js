@@ -89,6 +89,10 @@ class BarChart {
 
     vis.renderBars();
 
+    // // Add tooltips
+    // new BarTip('#bar-chart-tooltip', bars, vis.data)
+    //   .generateChart();
+
     vis.xAxisG
       .call(vis.xAxis)
       .call((g) => g.select('.domain').remove());
@@ -130,18 +134,25 @@ class BarChart {
       // join data: loop group per subgroup
       .data(vis.barData, vis.xValue)
       .join('g')
-      .attr('class', 'bar group platform-barchart')
+      .attr('class', (d) => `bar ${d.group} platform-barchart`)
+      .attr('id', (d) => `${d.group}`)
       .attr('transform', (d) => `translate(${vis.xScale(d.group)},0)`)
       // bars
       .selectAll('rect')
       .data((d) => vis.genres.map((key) => ({ key, value: d[key] })))
       .join('rect')
-      .attr('class', 'bar subgroup genre-barchart')
+      // set class to parent's class to get platform
+      // eslint-disable-next-line func-names
+      .attr('class', function (d, i) { return d3.select(this.parentNode).attr('class'); })
       .attr('x', (d) => vis.xSubGroupScale(vis.xValue(d)) + vis.config.margin.right)
       .attr('y', (d) => vis.yScale(vis.yValue(d)))
       .attr('width', vis.xSubGroupScale.bandwidth())
       .attr('height', (d) => vis.height - vis.yScale(d.value))
       .attr('fill', (d) => vis.colourScale(d.key));
+
+    // Add tooltips
+    new BarTip('bar-chart-tooltip', vis.data, bars)
+      .generateChart();
   }
 
   /* Purpose: Create and render a legend (checkbox & label) */

@@ -102,6 +102,24 @@ svg {
   background-color: #007ae6;
 }
 
+#bar-chart-tooltip {
+  position: absolute;
+  background: white;
+  opacity: 0;
+  box-shadow: 2px 2px 3px 0px rgb(92 92 92 / 0.5);
+  border: 1px solid #ddd;
+  font-size: 15px;
+  font-weight: 100;
+  padding: 3px 3px 3px 3px;
+  z-index: -5;
+}
+
+.bar-chart-tooltip-label {
+  font-weight: 200;
+  font-size: 10px;
+  color: 'black';
+}
+
 .tooltip {
   position: absolute;
   background: white;
