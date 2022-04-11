@@ -7,6 +7,7 @@ class GridChart {
       width: _config.width - _config.margin.left - _config.margin.right,
       platformColors: _config.platformColors,
       allPlatforms: _config.platforms,
+      financialPerfBands: _config.financialPerfBands,
     };
 
     this.data = _data;
@@ -305,9 +306,9 @@ class GridChart {
 
   _setFinancialPerfBands() {
     const vis = this;
-    const { data, bands } = vis;
+    const { data, bands, config } = vis;
+    const { financialPerfBands } = config;
 
-    const numGrids = 3;
     const result = bands;
     let minPerf = Number.MAX_SAFE_INTEGER;
     let maxPerf = Number.MIN_SAFE_INTEGER;
@@ -327,36 +328,24 @@ class GridChart {
       }
     });
 
-    const bandSize = parseFloat((maxPerf - minPerf).toFixed(3)) / numGrids;
-
-    let prevPerf = minPerf;
     for (let i = 0; i < bands.length; i += 1) {
-      const currPerf = prevPerf + bandSize;
       let currMin;
       let currMax;
       let currBand;
 
       if (i === 0) {
-        currMin = prevPerf;
-        currMax = currPerf;
-        currBand = 'poor';
+        currMin = minPerf;
+        [[currBand, currMax]] = financialPerfBands;
       } else if (i === 1) {
-        currMin = prevPerf;
-        currMax = currPerf;
-        currBand = 'good';
+        [[, currMin], [currBand, currMax]] = financialPerfBands;
       } else {
-        currMin = prevPerf;
-        currMax = maxPerf;
-        currBand = 'exceptional';
+        [, [, currMin], [currBand, currMax]] = financialPerfBands;
       }
-
       const budgetObj = {
         minPerf: currMin,
         maxPerf: currMax,
         perfBand: currBand,
       };
-
-      prevPerf = currPerf;
 
       result[i] = { ...result[i], ...budgetObj };
     }

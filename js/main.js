@@ -20,6 +20,11 @@ d3.csv('data/preprocessedMovies2.csv')
         '#93cdf7',
         '#ff9a3d',
       ],
+      financialPerfBands: [
+        ['poor', 1],
+        ['great', 10],
+        ['exceptional', Infinity],
+      ],
     });
 
     new PlatformLegend('pie-chart-legend', movieData.getAllPlatforms())
@@ -50,6 +55,7 @@ function renderCharts(movieData, filterHandler, config) {
       height: 900,
       platformColors: config.getPlatformColors(),
       platforms: movieData.getAllPlatforms(),
+      financialPerfBands: config.getFinancialPerfBands(),
     }, data),
 
     new PieChart({
