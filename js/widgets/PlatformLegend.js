@@ -7,6 +7,7 @@ class PlatformLegend extends Widget {
 
   // adapted from: https://stackoverflow.com/questions/11805251/add-html-elements-dynamically-with-javascript-inside-div-with-specific-id
   generate() {
+    // create pie chart legend
     this._platforms.forEach((p) => {
       const legendButton = this._createFrag(
         `<div class="pie-legend-btn widget active" id="${p.split(' ')[0].split('+')[0]}">${p}</div>`,

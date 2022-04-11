@@ -34,6 +34,7 @@ class PieChart {
     vis.chart = vis.svg.append('g')
       .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
 
+    // Add pie chart title
     vis.title = vis.svg.append('g')
       .append('text')
       .attr('class', 'chart-header')
@@ -77,13 +78,14 @@ class PieChart {
     const arcGenerator = d3.arc()
       .innerRadius(0)
       .outerRadius(100);
-
+    // Draw pie chart slices
     const arcs = vis.chart.selectAll('path')
       .data(pieData)
       .join('path')
       .attr('fill', (d) => vis.config.colors[vis.platformMap[d.data[0]]])
       .attr('d', arcGenerator);
 
+    // Add labels to pie chart slices
     const labels = vis.chart.selectAll('text')
       .data(pieData)
       .join('text')
@@ -94,7 +96,7 @@ class PieChart {
       .style('font-size', 14)
       .style('fill', 'white');
 
-    // Add tooltips
+    // Add pie chart tooltips
     new PieTip('pie-chart-tooltip', vis.data, arcs)
       .generateChart();
   }
