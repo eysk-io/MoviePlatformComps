@@ -1,3 +1,7 @@
+/**
+ * This class represents the platform filter widgets.
+ * It also serves as a legend for the pie and grid charts' platforms.
+ */
 class PlatformLegend extends Widget {
   constructor(inputNode, platforms, platformColors) {
     super();

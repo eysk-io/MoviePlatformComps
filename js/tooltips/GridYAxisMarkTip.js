@@ -1,3 +1,7 @@
+/**
+ * This class represents the GridChart's y-axis mark's tooltip.
+ * The tooltip pops up when the user hovers over each y-axis mark.
+ */
 class GridYAxisMarkTip extends ToolTip {
   constructor(id, data, ...elts) {
     super(id, data, elts);

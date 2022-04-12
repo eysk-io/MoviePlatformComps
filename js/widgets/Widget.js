@@ -1,3 +1,6 @@
+/**
+ * This class represents a general widget class.
+ */
 class Widget {
   constructor() {
     this._tempElt = document.createElement('div');

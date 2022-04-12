@@ -1,3 +1,7 @@
+/**
+ * This class represents the BarChart's tooltip.
+ * The tooltip pops up when the user hovers over each bar.
+ */
 class BarTip extends ToolTip {
   constructor(id, data, ...elts) {
     super(id, data, elts);

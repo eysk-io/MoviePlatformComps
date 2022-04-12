@@ -1,3 +1,7 @@
+/**
+ * This class represents the genre filter widgets.
+ * It also serves as a legend for the bar charts' genres.
+ */
 class GenreLegend extends Widget {
   constructor(inputNode, genres, barColors) {
     super();

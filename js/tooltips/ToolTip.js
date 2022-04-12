@@ -1,3 +1,6 @@
+/**
+ * This class represents a general tooltip.
+ */
 class ToolTip {
   constructor(id, data, elts) {
     this._id = id;

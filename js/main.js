@@ -1,5 +1,6 @@
 d3.csv('data/preprocessedMovies2.csv')
   .then((data) => {
+    // initialize data, filter, and configs
     const movieData = new MovieData(data);
     const filterHandler = new FilterHandler(movieData, 'none');
     const config = new Config({
@@ -36,6 +37,7 @@ d3.csv('data/preprocessedMovies2.csv')
       ],
     });
 
+    // create each widget based on data and configs
     new PlatformLegend('pie-chart-legend', movieData.getAllPlatforms(), config.getPlatformColors())
       .generate();
 
@@ -51,6 +53,7 @@ d3.csv('data/preprocessedMovies2.csv')
     new ResetButton('reset-button')
       .generate();
 
+    // render the application's charts based on data, filter, and configs
     renderCharts(movieData, filterHandler, config);
   });
 
@@ -87,6 +90,7 @@ function renderCharts(movieData, filterHandler, config) {
     }, data),
   ];
 
+  // add listeners for interactions
   addListeners(movieData, filterHandler, charts);
 }
 
@@ -100,6 +104,7 @@ function updateChartsByFilteredData(filteredData, charts) {
 function addListeners(movieData, filterHandler, charts) {
   const filteredData = new FilteredData(movieData.getRawData());
 
+  // select and add a click handler to each widget
   const widgets = document.querySelectorAll('.widget');
   widgets.forEach((elt) => {
     elt.addEventListener('click', (e) => {
@@ -117,6 +122,7 @@ function addListeners(movieData, filterHandler, charts) {
     });
   });
 
+  // handle filtering of year range slider
   const slider = document.querySelector('.range-slider');
   slider.addEventListener('change', () => {
     const rangeValueElts = document.getElementsByClassName('rangeValues');

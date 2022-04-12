@@ -27,7 +27,11 @@ class MultiViewPieChart {
 
     const { value } = vis.data;
     const numValues = Object.keys(value).length;
+
+    // initializes a data structure for an array of counts passed in from GridChart
     vis.allCounts = new Array(numValues - 1);
+
+    // initializes a data structure for an array of platforms passed in from GridChart
     vis.platforms = new Array(numValues - 1);
 
     vis.svg = d3.select(parentElement)
@@ -43,11 +47,14 @@ class MultiViewPieChart {
     const { config, data } = vis;
     const { width, height, platformColors } = config;
 
+    // sets the pie chart's radius based on width and height
+    // width and height have been set based on the count of movies by platform
     vis.radius = Math.max(
       Math.min(width, height) / 2,
       10,
     );
 
+    // create a list of colors to be used by the pie chart
     vis.platforms = Object.getOwnPropertyNames(data.value);
     vis.platforms.shift();
     const colorsProps = Object.getOwnPropertyNames(platformColors);
@@ -92,6 +99,7 @@ class MultiViewPieChart {
       countData.push([platforms[i], c]);
     });
 
+    // create a tooltip for the pie chart
     new MultiViewPieTip('multi-view-pie-chart-tooltip', countData, vis.chart)
       .generateChart();
   }

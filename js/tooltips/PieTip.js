@@ -1,3 +1,7 @@
+/**
+ * This class represents the PieChart's axis labels' tooltip.
+ * The tooltip pops up when the user hovers over the pie chart.
+ */
 class PieTip extends ToolTip {
   constructor(id, data, ...elts) {
     super(id, data, elts);

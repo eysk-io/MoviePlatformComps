@@ -1,3 +1,8 @@
+/**
+ * This class represents the application's configurations.
+ * These values are initialized upon the project's initialization.
+ * The values should NOT be changed.
+ */
 class Config {
   constructor({
     platformColors,

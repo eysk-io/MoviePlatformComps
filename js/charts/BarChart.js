@@ -88,10 +88,6 @@ class BarChart {
 
     vis.renderBars();
 
-    // // Add tooltips
-    // new BarTip('#bar-chart-tooltip', bars, vis.data)
-    //   .generateChart();
-
     vis.xAxisG
       .call(vis.xAxis)
       .call((g) => g.select('.domain').remove());

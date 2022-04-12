@@ -1,3 +1,6 @@
+/**
+ * This class handles the application's filtering upon widget interactions.
+ */
 class FilterHandler {
   constructor(movieData, filterVal, filter) {
     this._movieData = movieData;
@@ -35,6 +38,10 @@ class FilterHandler {
     this._filter = filter;
   }
 
+  /**
+   * Filter the movie's selected data by the current filters applied
+   * @returns filtered data
+   */
   filterBySelected() {
     const allGenres = this._movieData.getAllGenres();
     const allMpa = this._movieData.getAllMpa();
@@ -121,6 +128,10 @@ class FilterHandler {
   }
 }
 
+/**
+ * Swap the color of the element with data-value === filterVal to a default colour and back
+ * @param {*} filterVal
+ */
 function swapColor(filterVal) {
   const currButton = document.querySelector(`[data-value="${filterVal}"]`);
   const currButtonColor = currButton.style.cssText;

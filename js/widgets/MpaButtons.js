@@ -1,3 +1,6 @@
+/**
+ * This class represents the mpa rating filter widgets.
+ */
 class MpaButtons extends Widget {
   constructor(inputNode, ratings, color) {
     super();

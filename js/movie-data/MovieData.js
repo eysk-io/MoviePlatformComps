@@ -1,3 +1,6 @@
+/**
+ * This class represents the processed data used for the application's charts
+ */
 class MovieData {
   constructor(data) {
     this._rawData = data;

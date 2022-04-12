@@ -1,3 +1,6 @@
+/**
+ * This class represents the "reset all" button.
+ */
 class ResetButton extends Widget {
   constructor(inputNode) {
     super();

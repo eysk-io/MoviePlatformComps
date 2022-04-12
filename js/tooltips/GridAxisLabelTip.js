@@ -1,3 +1,7 @@
+/**
+ * This class represents the GridChart's axis labels' tooltip.
+ * The tooltip pops up when the user hovers over each axis header.
+ */
 class GridAxisLabelTip extends ToolTip {
   constructor(id, data, tipHtml, ...elts) {
     super(id, data, elts);

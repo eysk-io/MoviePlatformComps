@@ -28,12 +28,14 @@ class GridChart {
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // specify score bands (x-axis)
     vis.bands = vis._setScoreBands();
     vis.xAxisVals = new Array(3);
     vis.bands.forEach((s, i) => {
       vis.xAxisVals[i] = s.scoreBand;
     });
 
+    // specify financial performance bands (y-axis)
     vis.bands = vis._setFinancialPerfBands();
     vis.yAxisVals = new Array(3);
     vis.bands.forEach((s, i) => {
@@ -91,9 +93,11 @@ class GridChart {
       .attr('y', -25)
       .text(('Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score'));
 
+    // create aggregated data to be passed into grids
     vis.aggregatedData = vis._aggregateData();
     vis.aggregatedData = vis._setGridPos();
 
+    // create groups for each grid's pie chart
     const pieChartGroups = vis.chart.selectAll()
       .data(vis.aggregatedData)
       .join('g')
@@ -113,6 +117,7 @@ class GridChart {
 
     vis.multiViewPieCharts = [];
 
+    // initialize each grid's pie chart
     // eslint-disable-next-line no-underscore-dangle
     [vis.pieChartGroups] = pieChartGroups._groups;
     vis.pieChartGroups.forEach((g, i) => {
@@ -137,6 +142,7 @@ class GridChart {
   renderVis() {
     const vis = this;
 
+    // update grids' pie charts
     vis.pieChartGroups.forEach((_g, i) => {
       const currVal = vis.aggregatedData[i].value.total;
       vis.multiViewPieCharts[i].config.width = Math.sqrt(currVal * 90);
@@ -145,6 +151,7 @@ class GridChart {
       vis.multiViewPieCharts[i].updateVis();
     });
 
+    // create tooltips for the axis labels and mark
     const yAxisTipHtml = '<div class="tooltip-list"><b class="tooltip-list">Segmented Financial Performance 💰</b></div>'
       + '<ul class="tooltip-list">'
       + '<li class="tooltip-list-item">"Financial Performance" is calculated by taking each movie\'s <b class="tooltip-list">Gross Revenue/Cost</b>.</li>'
@@ -166,10 +173,13 @@ class GridChart {
     });
   }
 
+  /**
+   * Aggregates movie data into platforms and their counts
+   * group = x-axis value
+   * variable = y-axis value
+   * @returns aggregated data
+   */
   _aggregateData() {
-    // group = x axis value
-    // variable = y axis value
-
     const vis = this;
     const {
       data,
@@ -235,18 +245,21 @@ class GridChart {
   }
 
   /**
-     * [
-     *  {xPos: 120, yPos: 600} (Low, Low) (Variable(x), Group(y))
-     *  {xPos: 360, yPos: 600} (Low, Med)
-     *  {xPos: 600, yPos: 600} (Low, High)
-     *  {xPos: 120, yPos: 360} (Med, Low)
-     *  {xPos: 360, yPos: 360} (Med, Med)
-     *  {xPos: 600, yPos: 360} (Med, High)
-     *  {xPos: 120, yPos: 120} (High, Low)
-     *  {xPos: 360, yPos: 120} (High, Med)
-     *  {xPos: 600, yPos: 120} (High, High)
-     * ]
-     */
+   * Returns object's data with the grid positions on the GridChart set
+   * Data format:
+   * [
+   *  {xPos: 120, yPos: 600} (Low, Low) (Variable(x), Group (y))
+   *  {xPos: 360, yPos: 600} (Low, Med)
+   *  {xPos: 600, yPos: 600} (Low, High)
+   *  {xPos: 120, yPos: 360} (Med, Low)
+   *  {xPos: 360, yPos: 360} (Med, Med)
+   *  {xPos: 600, yPos: 360} (Med, High)
+   *  {xPos: 120, yPos: 120} (High, Low)
+   *  {xPos: 360, yPos: 120} (High, Med)
+   *  {xPos: 600, yPos: 120} (High, High)
+   * ]
+   * @returns original data with positions set
+   */
   _setGridPos() {
     const vis = this;
     const { aggregatedData, config } = vis;
@@ -266,6 +279,10 @@ class GridChart {
     return aggregatedData;
   }
 
+  /**
+   * Sets the rotten tomatoes score bands for the dataset
+   * @returns object's data with score bands set
+   */
   _setScoreBands() {
     const vis = this;
     const { data } = vis;
@@ -310,6 +327,10 @@ class GridChart {
     return result;
   }
 
+  /**
+   * Sets the rotten financial performance bands for the dataset
+   * @returns object's data with performance bands set
+   */
   _setFinancialPerfBands() {
     const vis = this;
     const { data, bands, config } = vis;

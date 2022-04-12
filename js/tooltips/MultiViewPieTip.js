@@ -1,3 +1,7 @@
+/**
+ * This class represents the MultiViewPieChart's tooltip.
+ * The tooltip pops up when the user hovers over the pie chart in the grid.
+ */
 class MultiViewPieTip extends ToolTip {
   constructor(id, data, ...elts) {
     super(id, data, elts);

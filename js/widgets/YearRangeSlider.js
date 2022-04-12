@@ -1,4 +1,6 @@
-// adapted from https://codepen.io/rendykstan/pen/VLqZGO
+/**
+ * This class represents the year range slider.
+ */
 class YearRangeSlider extends Widget {
   constructor(inputNode, yearRange) {
     super();
@@ -7,6 +9,7 @@ class YearRangeSlider extends Widget {
     this._getVals = window.getVals;
   }
 
+  // adapted from https://codepen.io/rendykstan/pen/VLqZGO
   generate() {
     const { min, max } = this._yearRange;
 
