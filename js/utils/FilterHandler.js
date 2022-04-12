@@ -42,8 +42,6 @@ class FilterHandler {
     const data = this._movieData.getProcessedData();
     const selected = this._filter;
 
-    console.log(this._filter);
-
     const filterVal = this._filterVal;
 
     if (allGenres.includes(filterVal)) {
