@@ -9,7 +9,17 @@ class GridYAxisMarkTip extends ToolTip {
         d3.select(`#${this._id}`)
           .style('opacity', 1)
           .style('z-index', 5)
-          .html(`<p>This band contains movies with <b><i>${this._data.perfBand}</b></i> financial performance.</p>`);
+          .html(`
+            <div class="tooltip-list"><b class="tooltip-list">
+              ${this._data.perfBand.toUpperCase()}</b> performance 📈
+            </div>
+            </br>
+            <div class="tooltip-list"><b class="tooltip-list">
+              <b class="tooltip-list">
+                ${this._data.minPerf} <= Gross Revenue/Cost < ${this._data.maxPerf}
+              </b>
+            </div>
+          `);
       }).on('mousemove', (e) => {
         d3.select(`#${this._id}`)
           .style('left', `${e.pageX + 20}px`)

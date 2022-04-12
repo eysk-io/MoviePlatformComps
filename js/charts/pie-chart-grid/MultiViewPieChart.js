@@ -71,6 +71,7 @@ class MultiViewPieChart {
     const {
       colorsList,
       allCounts,
+      platforms,
       radius,
     } = vis;
 
@@ -86,7 +87,12 @@ class MultiViewPieChart {
       .attr('fill', (_d, i) => colorsList[i])
       .attr('d', vis.chart.arc);
 
-    new MultiViewPieTip('multi-view-pie-chart-tooltip', allCounts, vis.chart)
+    const countData = [];
+    allCounts.forEach((c, i) => {
+      countData.push([platforms[i], c]);
+    });
+
+    new MultiViewPieTip('multi-view-pie-chart-tooltip', countData, vis.chart)
       .generateChart();
   }
 }

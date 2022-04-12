@@ -145,10 +145,19 @@ class GridChart {
       vis.multiViewPieCharts[i].updateVis();
     });
 
-    new GridXAxisLabelTip('grid-chart-xaxis-label-tooltip', vis.bands, vis.chart.xAxisLabel)
+    const yAxisTipHtml = '<div class="tooltip-list"><b class="tooltip-list">Segmented Financial Performance 💰</b></div>'
+      + '<ul class="tooltip-list">'
+      + '<li class="tooltip-list-item">"Financial Performance" is calculated by taking each movie\'s <b class="tooltip-list">Gross Revenue/Cost</b>.</li>'
+      + '<li class="tooltip-list-item">Each row of the y-axis contains a pre-determined range of Financial Performance.</li>'
+      + '</ul>';
+    new GridAxisLabelTip('grid-chart-yaxis-label-tooltip', vis.bands, yAxisTipHtml, vis.chart.yAxisLabel)
       .generateChart();
 
-    new GridYAxisLabelTip('grid-chart-yaxis-label-tooltip', vis.bands, vis.chart.yAxisLabel)
+    const xAxisTipHtml = '<div class="tooltip-list"><b class="tooltip-list">Segmented Rotten Tomatoes Score 🍅</b></div>'
+      + '<ul class="tooltip-list">'
+      + '<li class="tooltip-list-item">Each column of the x-axis contains an equal range of Rotten Tomatoes Score, which range is based on the entire dataset.</li>'
+      + '</ul>';
+    new GridAxisLabelTip('grid-chart-xaxis-label-tooltip', vis.bands, xAxisTipHtml, vis.chart.xAxisLabel)
       .generateChart();
 
     vis.chart.yAxisMarks.each((_m, i) => {
