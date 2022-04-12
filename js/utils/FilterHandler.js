@@ -70,6 +70,13 @@ class FilterHandler {
       selected.maxYear = +filterVal[1];
     }
 
+    // Select all if widget compeletely deselected
+    if (selected.genres.length === 0) {
+      allGenres.forEach((d) => selected.genres.push(d));
+    }
+    if (selected.mpaa.length === 0) {
+      allMpaa.forEach((d) => selected.mpaa.push(d));
+    }
     if (selected.platforms.length === 0) {
       allPlatforms.forEach((d) => selected.platforms.push(d));
     }
