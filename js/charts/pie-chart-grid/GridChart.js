@@ -166,7 +166,6 @@ class GridChart {
       data,
       bands,
       config,
-      _getPerfScore,
     } = vis;
     const { allPlatforms } = config;
 
@@ -187,7 +186,7 @@ class GridChart {
 
     data.forEach((d) => {
       if (+d.budget !== 0 && +d.gross !== 0) {
-        const currPerf = _getPerfScore(d);
+        const currPerf = +d.gross / +d.budget;
 
         let row;
         if (currPerf < bands[0].maxPerf) {
@@ -313,7 +312,7 @@ class GridChart {
 
     data.forEach((d) => {
       if (+d.budget !== 0 && +d.gross !== 0) {
-        const currPerf = this._getPerfScore(d);
+        const currPerf = +d.gross / +d.budget;
         maxPerf = Math.max(
           currPerf,
           maxPerf,
@@ -349,10 +348,5 @@ class GridChart {
     }
 
     return result;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  _getPerfScore(d) {
-    return Math.log(+d.gross / +d.budget);
   }
 }

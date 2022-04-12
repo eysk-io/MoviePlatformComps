@@ -14,17 +14,7 @@ class Config {
   }
 
   getFinancialPerfBands() {
-    const logScaleBands = [];
-
-    this._financialPerfBands.forEach((f) => {
-      const eachBand = [
-        f[0],
-        Math.log(f[1]),
-      ];
-      logScaleBands.push(eachBand);
-    });
-
-    return logScaleBands;
+    return [...this._financialPerfBands];
   }
 
   getMpaRatingsColor() {
