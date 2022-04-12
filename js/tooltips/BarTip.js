@@ -65,8 +65,8 @@ class BarTip extends ToolTip {
         `);
       }).on('mousemove', (e) => {
         d3.select(`#${this._id}`)
-          .style('left', `${e.pageX - 40}px`)
-          .style('top', `${e.pageY - 140}px`);
+          .style('left', `${e.pageX - 10}px`)
+          .style('top', `${e.pageY - 250}px`);
       }).on('mouseleave', () => {
         d3.select(`#${this._id}`)
           .style('opacity', 0)
