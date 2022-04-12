@@ -72,13 +72,22 @@ class FilterHandler {
 
     // Select all if widget compeletely deselected
     if (selected.genres.length === 0) {
-      allGenres.forEach((d) => selected.genres.push(d));
+      allGenres.forEach((d) => {
+        selected.genres.push(d);
+        swapColor(d);
+      });
     }
     if (selected.mpa.length === 0) {
-      allMpa.forEach((d) => selected.mpa.push(d));
+      allMpa.forEach((d) => {
+        selected.mpa.push(d);
+        swapColor(d);
+      });
     }
     if (selected.platforms.length === 0) {
-      allPlatforms.forEach((d) => selected.platforms.push(d));
+      allPlatforms.forEach((d) => {
+        selected.platforms.push(d);
+        swapColor(d);
+      });
     }
 
     const filtered = data.filter((d) => {
@@ -110,4 +119,14 @@ class FilterHandler {
 
     return filtered;
   }
+}
+
+function swapColor(filterVal) {
+  const currButton = document.querySelector(`[data-value="${filterVal}"]`);
+  const currButtonColor = currButton.style.cssText;
+
+  // Must use rgb as currButton.style.cssText will always output rgb
+  currButton.style.cssText = currButtonColor === 'background-color: rgb(234, 221, 208);'
+    ? `background-color: ${currButton.getAttribute('data-color')}`
+    : 'background-color: rgb(234, 221, 208);';
 }
