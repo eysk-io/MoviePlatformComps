@@ -48,21 +48,18 @@ class BarTip extends ToolTip {
         // Create tooltip with top grossing  movies
         let listItems = '';
         sampleMovies.forEach((m) => {
-          listItems += `<li class=${'bar-chart-list'}><b class=${'bar-chart-list'}>${m.Title}</b>   
-          ${formatter.format(m.gross)}`;
+          listItems += `<li class='tooltip-list-item'><b class='tooltip-list-item'>${m.Title}</b> 🎫 ${formatter.format(m.gross)}`;
         });
 
         d3.select(`#${this._id}`)
           .style('opacity', 1)
           .style('z-index', 5)
           .html(`
-          <div class=${'bar-chart-list'}>
-            <b  class=${'bar-chart-list'}>${selectedPlatform}-${selectedGenre}</b>
+          <div class='tooltip-list'>
+            <b class='tooltip-list'>${selectedPlatform}-${selectedGenre}</b></br>
+            <i class='tooltip-list'>Top Box Office Movies by Platform and Genre</i>
           </div>
-          <div class=${'bar-chart-list'}>
-            <i  class=${'bar-chart-list'}>Top Box Office Movies by Platform and Genre</i>
-          </div>
-          <ol class=${'bar-chart-list'}>
+          <ol class='tooltip-list'>
             ${listItems}
           </ol>
         `);

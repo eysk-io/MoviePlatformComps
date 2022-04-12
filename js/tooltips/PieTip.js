@@ -20,20 +20,18 @@ class PieTip extends ToolTip {
         // Create tooltip with top rated movies
         let listItems = '';
         sampleMovies.forEach((m) => {
-          listItems += `<li class=${'pie-chart-list'}><b class=${'pie-chart-list'}>${m.Title}</b> 🍅 ${m['Rotten Tomato Score']}%</li>`;
+          listItems += `<li class='tooltip-list-item'><b class='tooltip-list-item'>${m.Title}</b> 🍅 ${m['Rotten Tomato Score']}%</li>`;
         });
 
         d3.select(`#${this._id}`)
           .style('opacity', 1)
           .style('z-index', 5)
           .html(`
-          <div class=${'pie-chart-list'}>
-            <b  class=${'pie-chart-list'}>${selectedPlatform}</b>
+          <div class='tooltip-list'>
+            <b class='tooltip-list'>${selectedPlatform}</b></br>
+            <i class='tooltip-list'>Top Rated Movies</i>
           </div>
-          <div class=${'pie-chart-list'}>
-            <i  class=${'pie-chart-list'}>Top Rated Movies</i>
-          </div>
-          <ol class=${'pie-chart-list'}>
+          <ol class='tooltip-list'>
             ${listItems}
           </ol>
         `);

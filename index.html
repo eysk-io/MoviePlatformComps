@@ -9,33 +9,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Palette+Mosaic&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
-    <title>Comparison of Movies on Streaming Services</title>
+    <title>Comparison of Movies on Streaming Platforms</title>
 </head>
 <body>
     <img id="banner" src="./images/banner.png" alt="banner image"/>
-    <h1 id="title">Comparison of Movies on Streaming Services</h1>
+    <h1 id="title">Comparison of Movies on Streaming Platforms</h1>
     <div class="charts">
         <div class="row">
             <div class="column first">
-                <div id="mpa-rating-button-container"></div>
                 <svg id="grid-chart"></svg>
+            </div>
+            <div class="column second">
+                <div class="widget-container "id="pie-chart-legend">Platforms:</div>
+                <div class="widget-container "id="mpa-rating-button-container">MPA Ratings:</div>
+                <div class="widget-container "id="bar-chart-legend">Genres:</div>
+            </div>
+            <div class="column third">
+                <svg id="pie-chart"></svg>
+                <p class="grid-chart-desc">
+                    The Grid Chart to the left <span><strong><i>(Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score)</i></strong></span> is divided into 3x3 bands.<br><br>
+                    The size of each pie chart is an indicator of the total number of movies in each grid. A larger pie chart represents a greater number of movies. If there is nothing in a grid, there are no movies that fit within the specific band.<br><br>
+                    Each grid contains a pie chart showing the proportion of movies by platform for the intersection of the appropriate Financial Performance and Rotten Tomatoes Score.<br><br> 
+                </p>
                 <div class="range-slider-container">
                     <section class="range-slider">
                         <span class="rangeValues"></span>
                     </section>
-                </div>
-            </div>
-            <div class="column second">
-                <p class="grid-chart-desc">
-                    The Grid Chart to the left <span><strong><i>(Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score)</i></strong></span> is divided into 3x3 bands.<br><br>
-
-                    The size of each pie chart is an indicator of the total number of movies in each grid. A larger pie chart represents a greater number of movies. If there is nothing in a grid, there are not any movies that fit within these measurements.<br><br>
-
-                    Each grid contains a pie chart showing the proportion of movies by platform for the intersection of the appropriate Financial Performance and Rotten Tomatoes Score.<br><br> 
-                </p>
-                <div class="pie-chart-container">
-                    <svg id="pie-chart"></svg>
-                    <div id="pie-chart-legend"></div>
                 </div>
                 <svg id="bar-chart"></svg>
             </div>
@@ -47,7 +46,8 @@
     <script src="js/utils/Config.js"></script>
     <script src="js/widgets/Widget.js"></script>
     <script src="js/widgets/PlatformLegend.js"></script>
-    <script src="js/widgets/MpaaButtons.js"></script>
+    <script src="js/widgets/MpaButtons.js"></script>
+    <script src="js/widgets/GenreLegend.js"></script>
     <script src="js/widgets/YearRangeSlider.js"></script>
     <script src="js/movie-data/MovieData.js"></script>
     <script src="js/movie-data/FilteredData.js"></script>

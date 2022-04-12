@@ -20,6 +20,15 @@ d3.csv('data/preprocessedMovies2.csv')
         '#93cdf7',
         '#ff9a3d',
       ],
+      mpaRatingsColor: '#67d0a5',
+      mpaRatingsOrdered: [
+        'G',
+        'PG',
+        'PG-13',
+        'R',
+        'NC-17',
+        'Not Rated',
+      ],
       financialPerfBands: [
         ['poor', 1],
         ['great', 10],
@@ -27,13 +36,16 @@ d3.csv('data/preprocessedMovies2.csv')
       ],
     });
 
-    new PlatformLegend('pie-chart-legend', movieData.getAllPlatforms())
+    new PlatformLegend('pie-chart-legend', movieData.getAllPlatforms(), config.getPlatformColors())
       .generate();
 
-    new MpaaButtons('mpa-rating-button-container', movieData.getAllMpaa())
+    new MpaButtons('mpa-rating-button-container', config.getMpaRatingsOrdered(), config.getMpaRatingsColor())
       .generate();
 
     new YearRangeSlider('range-input', movieData.getYearRange())
+      .generate();
+
+    new GenreLegend('bar-chart-legend', movieData.getAllGenres().sort(), config.getBarColors())
       .generate();
 
     renderCharts(movieData, filterHandler, config);
@@ -46,10 +58,10 @@ function renderCharts(movieData, filterHandler, config) {
     new GridChart({
       parentElement: '#grid-chart',
       margin: {
-        top: 90,
+        top: 50,
         bottom: 90,
         left: 90,
-        right: 90,
+        right: 20,
       },
       width: 900,
       height: 900,
@@ -90,7 +102,9 @@ function addListeners(movieData, filterHandler, charts) {
     elt.addEventListener('click', (e) => {
       elt.classList.toggle('active');
 
-      const filterVal = elt.getAttribute('data-category') || e.target.innerHTML;
+      const filterVal = e.target.innerHTML;
+      swapColor(filterVal);
+
       filterHandler.setMovieData(filteredData);
       filterHandler.setFilterVal(filterVal);
       const filtered = filterHandler.filterBySelected();
@@ -98,6 +112,14 @@ function addListeners(movieData, filterHandler, charts) {
 
       updateChartsByFilteredData(filteredData, charts);
     });
+
+    elt.addEventListener('mouseover', (e) => {
+      swapColor(e.target.innerHTML);
+    }, false);
+
+    elt.addEventListener('mouseout', (e) => {
+      swapColor(e.target.innerHTML);
+    }, false);
   });
 
   const slider = document.querySelector('.range-slider');
@@ -117,6 +139,16 @@ function addListeners(movieData, filterHandler, charts) {
   });
 }
 
+function swapColor(filterVal) {
+  const currButton = document.querySelector(`[data-value="${filterVal}"]`);
+  const currButtonColor = currButton.style.cssText;
+
+  // Must use rgb as currButton.style.cssText will always output rgb
+  currButton.style.cssText = currButtonColor === 'background-color: rgb(234, 221, 208);'
+    ? `background-color: ${currButton.getAttribute('data-color')}`
+    : 'background-color: rgb(234, 221, 208);';
+}
+
 // adapted from https://codepen.io/rendykstan/pen/VLqZGO
 // eslint-disable-next-line func-names
 window.getVals = function () {
@@ -129,5 +161,5 @@ window.getVals = function () {
   if (slide1 > slide2) { const tmp = slide2; slide2 = slide1; slide1 = tmp; }
 
   const displayElement = parent.getElementsByClassName('rangeValues')[0];
-  displayElement.innerHTML = `Year Released: ${slide1} - ${slide2}`;
+  displayElement.innerHTML = `Year Released: ${slide1} - ${slide2} `;
 };

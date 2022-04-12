@@ -1,15 +1,21 @@
 .range-slider-container {
-  width: 900px;
-  text-align: center;
+  width: 600px;
+  text-align: left;
+  margin-left: 45px;
+}
+
+.rangeValues {
+  font-weight: bold;
+  margin-left: 25px;
 }
 
 /* SCSS taken from: https://codepen.io/rendykstan/pen/VLqZGO and converted to CSS*/
 section.range-slider {
   position: relative;
   margin: auto;
-  width: 750px;
+  width: 600px;
   height: 75px;
-  text-align: center;
+  text-align: left;
 }
 section.range-slider input[type="range"] {
   pointer-events: none;
@@ -24,7 +30,7 @@ section.range-slider input[type="range"] {
   overflow: hidden;
   left: 0;
   top: 30px;
-  width: 750px;
+  width: 600px;
   outline: none;
   height: 20px;
   margin: 0;

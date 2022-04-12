@@ -1,7 +1,15 @@
 class Config {
-  constructor({ platformColors, barColors, financialPerfBands }) {
+  constructor({
+    platformColors,
+    barColors,
+    mpaRatingsColor,
+    mpaRatingsOrdered,
+    financialPerfBands,
+  }) {
     this._platformColors = platformColors;
     this._barColors = barColors;
+    this._mpaRatingsColor = mpaRatingsColor;
+    this._mpaRatingsOrdered = mpaRatingsOrdered;
     this._financialPerfBands = financialPerfBands;
   }
 
@@ -17,6 +25,14 @@ class Config {
     });
 
     return logScaleBands;
+  }
+
+  getMpaRatingsColor() {
+    return this._mpaRatingsColor;
+  }
+
+  getMpaRatingsOrdered() {
+    return [...this._mpaRatingsOrdered];
   }
 
   getPlatformColors() {

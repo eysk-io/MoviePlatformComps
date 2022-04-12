@@ -5,7 +5,7 @@ class BarChart {
       containerWidth: 650,
       containerHeight: 300,
       margin: {
-        top: 90, right: 10, bottom: 20, left: 60,
+        top: 30, right: 10, bottom: 20, left: 60,
       },
       colors: _config.barColors,
       allGenres: _config.genres.sort(),
@@ -61,14 +61,13 @@ class BarChart {
       .tickSizeOuter(0);
 
     vis.xAxisG = vis.chartArea.append('g')
-      .attr('class', 'axis x-axis')
+      .attr('class', 'axis x-axis mark-label')
       .attr('transform', `translate(0,${vis.height})`);
 
     vis.yAxisG = vis.chartArea.append('g')
       .attr('class', 'axis y-axis');
 
     vis.updateVis();
-    vis.renderLegend();
   }
 
   updateVis() {
@@ -153,39 +152,6 @@ class BarChart {
     // Add tooltips
     new BarTip('bar-chart-tooltip', vis.data, bars)
       .generateChart();
-  }
-
-  /* Purpose: Create and render a legend (checkbox & label) */
-  renderLegend() {
-    const vis = this;
-    const genres = vis.config.allGenres;
-    const size = 20;
-
-    // Add legend label
-    vis.svg.selectAll('.labels')
-      .data(genres)
-      .join('text')
-      .attr('class', (d) => `label ${d} barchart widget`)
-      .attr('data-category', (d) => `${d}`)
-      .attr('x', (d, i) => vis.config.margin.left + i * (size + 42))
-      .attr('y', vis.config.margin.bottom + 20 + size * 1.8)
-      .text((d) => d)
-      .attr('text-anchor', 'middle')
-      .style('alignment-baseline', 'middle')
-      .style('font-weight', '700')
-      .style('font-size', '12px');
-
-    // Add one checkbox in the legend for each label
-    vis.svg.selectAll('.box')
-      .data(genres)
-      .join('rect')
-      .attr('class', (d) => `box ${d} barchart widget`)
-      .attr('data-category', (d) => `${d}`)
-      .attr('x', (d, i) => vis.config.margin.left + i * (size + 41))
-      .attr('y', vis.config.margin.bottom + 20)
-      .attr('width', size)
-      .attr('height', size)
-      .style('fill', (d) => vis.colourScale(d));
   }
 
   /**

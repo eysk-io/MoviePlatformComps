@@ -1,5 +1,5 @@
 * {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'ZCOOL KuaiLe', cursive;
   background-color: #EADDD0;
 }
 
@@ -15,31 +15,43 @@ svg {
 .second {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  justify-content: center
+}
+
+.third {
+  display: flex;
+  flex-direction: column;
+  width: 42%;
 }
 
 .grid-chart-desc {
-  width: 75%;
+  width: 60%;
+  margin-left: 50px;
 }
 
 .chart-header {
-  font-family: arial;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 
-.grid-chart-mark-labels, .grid-chart-label {
+.grid-chart-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.pie-chart-arc-label {
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  text-anchor: middle;
+  font-size: 14;
+}
+
+.mark-label {
   font-size: 15px;
   font-weight: bold;
 }
 
-#mpa-rating-button-container {
-  text-align: center;
-}
-
-.mpa-rating-button {
-  margin: 10px;
-  font-size: 20px;
+#bar-chart-tooltip {
+  pointer-events: none;
 }
 
 #backgroundVideo {
@@ -61,45 +73,39 @@ svg {
 
 #title {
   text-align: center;
-  font-family: 'ZCOOL KuaiLe', cursive;
   font-size: 50px;
   color:  black;
 }
 
-.pie-chart-container {
-  display: flex;
+.widget-container {
+  text-align: center;
+  width: 125px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  border: 2px solid black;
+  padding: 10px;
 }
 
-#pie-chart-legend {
+.widget {
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  transition: 0.2s;
+  font-size: 14px;
+  font-weight: bold;
+  height: 35px;
+  margin: 3%;
   width: 100px;
-  margin-top: 10%;
+  border: 4px solid black;
 }
 
-.pie-legend-btn {
-  color: grey;
-  font-size: 13.5px;
-  height: 25px;
-  margin: 5%;
+.widget:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 2.5px #666;
 }
 
-.pie-legend-btn.active {
-  color: black;
-}
-
-#Netflix {
-  background-color: #485908;
-}
-
-#Hulu {
-  background-color: #ae35bb;
-}
-
-#Prime {
-  background-color: #e4c44c;
-}
-
-#Disney {
-  background-color: #007ae6;
+.widget:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(2px);
 }
 
 #bar-chart-tooltip {
@@ -138,7 +144,8 @@ svg {
   color: 'black';
 }
 
-.pie-chart-list {
+.tooltip-list, 
+.tooltip-list-item {
   background-color: white;
   font-size: 13px;
 }

@@ -3,8 +3,8 @@ class PieChart {
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
-      containerWidth: _config.containerWidth || 290,
-      containerHeight: _config.containerHeight || 300,
+      containerWidth: _config.containerWidth || 500,
+      containerHeight: _config.containerHeight || 250,
       margin: _config.margin || {
         top: 20, right: 20, bottom: 20, left: 60,
       },
@@ -32,14 +32,13 @@ class PieChart {
       .attr('height', vis.config.containerHeight);
 
     vis.chart = vis.svg.append('g')
-      .attr('transform', `translate(${vis.config.margin.left + 100},${vis.config.margin.top + 150})`);
+      .attr('transform', `translate(${vis.config.margin.left + 145},${vis.config.margin.top + 125})`);
 
     // Add pie chart title
     vis.title = vis.svg.append('g')
       .append('text')
       .attr('class', 'chart-header')
       .text('Number of Movies by Platform')
-      .style('font-size', 16)
       .attr('transform', `translate(${vis.config.margin.left},${vis.config.margin.top})`);
 
     vis.updateVis();
@@ -68,7 +67,7 @@ class PieChart {
     });
 
     const t = d3.transition()
-      .duration(300)
+      .duration(200)
       .ease(d3.easeLinear);
 
     const pie = d3.pie()
@@ -92,8 +91,7 @@ class PieChart {
       .transition(t)
       .text((d) => d.data[1])
       .attr('transform', (d) => `translate(${arcGenerator.centroid(d)})`)
-      .style('text-anchor', 'middle')
-      .style('font-size', 14)
+      .attr('class', 'pie-chart-arc-label')
       .style('fill', 'white');
 
     // Add pie chart tooltips

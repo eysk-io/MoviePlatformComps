@@ -50,13 +50,14 @@ class GridChart {
       .call(d3.axisBottom(vis.xScale)
         .tickSize(0))
       .selectAll('text')
-      .attr('class', 'grid-chart-mark-labels');
+      .attr('class', 'mark-label')
+      .attr('dy', '1em');
 
     vis.chart.xAxisLabel = vis.chart.append('text')
       .attr('class', 'grid-chart-label')
       .attr('text-anchor', 'end')
-      .attr('x', width - 195)
-      .attr('y', height + 60)
+      .attr('x', width - 210)
+      .attr('y', height + 50)
       .text('Segmented Rotten Tomatoes Score (out of 100)');
 
     vis.yScale = d3.scaleBand()
@@ -67,7 +68,7 @@ class GridChart {
       .call(d3.axisLeft(vis.yScale)
         .tickSize(0))
       .selectAll('text')
-      .attr('class', 'grid-chart-mark-labels')
+      .attr('class', 'mark-label')
       .style('text-anchor', 'end')
       .attr('dx', (d) => `${1.2 + (0.2 * d.length)}em`)
       .attr('dy', '-0.5em')
@@ -76,7 +77,7 @@ class GridChart {
     vis.chart.yAxisLabel = vis.chart.append('text')
       .attr('class', 'grid-chart-label')
       .attr('text-anchor', 'end')
-      .attr('x', -230)
+      .attr('x', -245)
       .attr('y', -65)
       .attr('dy', '.75em')
       .attr('transform', 'rotate(-90)')
@@ -86,7 +87,7 @@ class GridChart {
       .attr('id', 'grid-chart-header')
       .attr('class', 'chart-header')
       .attr('text-anchor', 'end')
-      .attr('x', width + 8)
+      .attr('x', width + 20)
       .attr('y', -25)
       .text(('Proportion of Movies by Platform, Financial Performance, and Rotten Tomatoes Score'));
 
@@ -115,11 +116,8 @@ class GridChart {
     // eslint-disable-next-line no-underscore-dangle
     [vis.pieChartGroups] = pieChartGroups._groups;
     vis.pieChartGroups.forEach((g, i) => {
-      const currVal = vis.aggregatedData[i].value.total;
       const multiViewPieChart = new MultiViewPieChart({
         parentElement: `#${g.id}`,
-        width: Math.sqrt(currVal * 50),
-        height: Math.sqrt(currVal * 50),
         platformColors: vis.config.platformColors,
       }, vis.aggregatedData[i]);
       vis.multiViewPieCharts.push(multiViewPieChart);
@@ -141,8 +139,8 @@ class GridChart {
 
     vis.pieChartGroups.forEach((_g, i) => {
       const currVal = vis.aggregatedData[i].value.total;
-      vis.multiViewPieCharts[i].config.width = Math.sqrt(currVal * 50);
-      vis.multiViewPieCharts[i].config.height = Math.sqrt(currVal * 50);
+      vis.multiViewPieCharts[i].config.width = Math.sqrt(currVal * 90);
+      vis.multiViewPieCharts[i].config.height = Math.sqrt(currVal * 90);
       vis.multiViewPieCharts[i].data = vis.aggregatedData[i];
       vis.multiViewPieCharts[i].updateVis();
     });

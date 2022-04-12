@@ -4,7 +4,7 @@ class FilterHandler {
     this._filterVal = filterVal;
     this._filter = filter || {
       genres: movieData.getAllGenres(),
-      mpaa: movieData.getAllMpaa(),
+      mpa: movieData.getAllMpa(),
       platforms: movieData.getAllPlatforms(),
       minYear: movieData.getYearMin(),
       maxYear: movieData.getYearMax(),
@@ -37,7 +37,7 @@ class FilterHandler {
 
   filterBySelected() {
     const allGenres = this._movieData.getAllGenres();
-    const allMpaa = this._movieData.getAllMpaa();
+    const allMpa = this._movieData.getAllMpa();
     const allPlatforms = this._movieData.getAllPlatforms();
     const data = this._movieData.getProcessedData();
     const selected = this._filter;
@@ -51,12 +51,12 @@ class FilterHandler {
       } else {
         selected.genres.push(filterVal);
       }
-    } else if (allMpaa.includes(filterVal)) {
-      if (selected.mpaa.includes(filterVal)) {
-        const idx = selected.mpaa.indexOf(filterVal);
-        selected.mpaa.splice(idx, 1);
+    } else if (allMpa.includes(filterVal)) {
+      if (selected.mpa.includes(filterVal)) {
+        const idx = selected.mpa.indexOf(filterVal);
+        selected.mpa.splice(idx, 1);
       } else {
-        selected.mpaa.push(filterVal);
+        selected.mpa.push(filterVal);
       }
     } else if (allPlatforms.includes(filterVal)) {
       if (selected.platforms.includes(filterVal)) {
@@ -89,10 +89,10 @@ class FilterHandler {
         }
       });
 
-      let mpaaExists = false;
-      selected.mpaa.forEach((s) => {
+      let mpaExists = false;
+      selected.mpa.forEach((s) => {
         if (Object.values(d).includes(s)) {
-          mpaaExists = true;
+          mpaExists = true;
         }
       });
 
@@ -105,7 +105,7 @@ class FilterHandler {
 
       const isInRange = +d.Year >= selected.minYear && +d.Year <= selected.maxYear;
 
-      return genreExists && mpaaExists && platformExists && isInRange;
+      return genreExists && mpaExists && platformExists && isInRange;
     });
 
     return filtered;

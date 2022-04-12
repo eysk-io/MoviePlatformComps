@@ -3,7 +3,7 @@ class MovieData {
     this._rawData = data;
     this._processedData = this._createProcessedData();
     this._allGenres = this._createAllGenres();
-    this._allMpaa = this._createAllMpaa();
+    this._allMpa = this._createAllMpa();
     this._allPlatforms = this._createAllPlatforms();
     this._yearMin = this._createYearMin();
     this._yearMax = this._createYearMax();
@@ -25,12 +25,12 @@ class MovieData {
     return new Set(this._allGenres);
   }
 
-  getAllMpaa() {
-    return [...this._allMpaa];
+  getAllMpa() {
+    return [...this._allMpa];
   }
 
-  getAllMpaaSet() {
-    return new Set(this._allMpaa);
+  getAllMpaSet() {
+    return new Set(this._allMpa);
   }
 
   getAllPlatforms() {
@@ -71,14 +71,14 @@ class MovieData {
     return [...allGenresSet];
   }
 
-  _createAllMpaa() {
-    const allMpaaSet = new Set();
+  _createAllMpa() {
+    const allMpaSet = new Set();
 
     this._processedData.forEach((d) => {
-      allMpaaSet.add(d.rating);
+      allMpaSet.add(d.rating);
     });
 
-    return [...allMpaaSet];
+    return [...allMpaSet];
   }
 
   _createAllPlatforms() {
