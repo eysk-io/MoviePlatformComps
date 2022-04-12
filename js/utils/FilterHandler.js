@@ -42,6 +42,8 @@ class FilterHandler {
     const data = this._movieData.getProcessedData();
     const selected = this._filter;
 
+    console.log(this._filter);
+
     const filterVal = this._filterVal;
 
     if (allGenres.includes(filterVal)) {
@@ -74,8 +76,8 @@ class FilterHandler {
     if (selected.genres.length === 0) {
       allGenres.forEach((d) => selected.genres.push(d));
     }
-    if (selected.mpaa.length === 0) {
-      allMpaa.forEach((d) => selected.mpaa.push(d));
+    if (selected.mpa.length === 0) {
+      allMpa.forEach((d) => selected.mpa.push(d));
     }
     if (selected.platforms.length === 0) {
       allPlatforms.forEach((d) => selected.platforms.push(d));
