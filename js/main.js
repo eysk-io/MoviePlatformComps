@@ -112,14 +112,6 @@ function addListeners(movieData, filterHandler, charts) {
 
       updateChartsByFilteredData(filteredData, charts);
     });
-
-    elt.addEventListener('mouseover', (e) => {
-      swapColor(e.target.innerHTML);
-    }, false);
-
-    elt.addEventListener('mouseout', (e) => {
-      swapColor(e.target.innerHTML);
-    }, false);
   });
 
   const slider = document.querySelector('.range-slider');
