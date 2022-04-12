@@ -30,9 +30,9 @@ d3.csv('data/preprocessedMovies2.csv')
         'Not Rated',
       ],
       financialPerfBands: [
-        ['poor', 1],
-        ['great', 10],
-        ['exceptional', Infinity],
+        ['poor (< 1)', 1],
+        ['great (1 - 10)', 10],
+        ['exceptional (> 10)', Infinity],
       ],
     });
 
