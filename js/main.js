@@ -48,6 +48,9 @@ d3.csv('data/preprocessedMovies2.csv')
     new GenreLegend('bar-chart-legend', movieData.getAllGenres().sort(), config.getBarColors())
       .generate();
 
+    new ResetButton('reset-button')
+      .generate();
+
     renderCharts(movieData, filterHandler, config);
   });
 
